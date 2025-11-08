@@ -1,8 +1,6 @@
 import fs from "fs";
 import path from "path";
-import dynamic from "next/dynamic";
-
-const ViewerClient = dynamic(() => import("../../ViewerClient"), { ssr: false });
+import RenderClient from "../../RenderClient";
 
 type Props = { params: { file: string } };
 
@@ -21,5 +19,5 @@ export default async function RenderTexPage({ params }: Props) {
     );
   }
 
-  return <ViewerClient tex={tex} filename={filename} />;
+  return <RenderClient tex={tex} filename={filename} />;
 }
