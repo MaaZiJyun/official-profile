@@ -7,7 +7,12 @@ type Props = {
 };
 
 export default async function TexFilePage({ params }: Props) {
-  const filename = params.file;
+  // params.file is treated as a slug (filename without .tex) to be export-friendly
+  const slug = params?.file ?? "";
+  if (typeof slug !== 'string' || slug.length === 0) {
+    return <div className="text-red-600">Invalid post identifier</div>;
+  }
+  const filename = slug.endsWith('.tex') ? slug : `${slug}.tex`;
   const postsDir = path.join(process.cwd(), "public", "posts");
   const full = path.join(postsDir, filename);
   let tex = "";
@@ -19,4 +24,16 @@ export default async function TexFilePage({ params }: Props) {
 
   // Render client component with tex content
   return <ViewerClient tex={tex} filename={filename} />;
+}
+
+export async function generateStaticParams() {
+  const postsDir = path.join(process.cwd(), 'public', 'posts');
+  try {
+    const files = await fs.promises.readdir(postsDir);
+    return files
+      .filter((f) => f.endsWith('.tex'))
+      .map((file) => ({ file: file.replace(/\.tex$/, '') }));
+  } catch (e) {
+    return [];
+  }
 }
