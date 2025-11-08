@@ -1,23 +1,32 @@
-import fs from "fs";
-import path from "path";
+"use client";
+
+import { useEffect, useState } from "react";
 import ViewerClient from "../ViewerClient";
 
-type Props = { searchParams: { file?: string } };
+export default function RenderQueryPage() {
+  const [tex, setTex] = useState<string | null>(null);
+  const [file, setFile] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-export default async function RenderQueryPage({ searchParams }: Props) {
-  // In this Next.js environment `searchParams` can be a Promise; unwrap it first.
-  const sp = (await searchParams) || {};
-  const file = sp.file;
-  if (!file) return <div className="text-zinc-600">No file specified.</div>;
+  useEffect(() => {
+    const sp = new URLSearchParams(window.location.search);
+    const f = sp.get("file");
+    if (!f) {
+      setError("No file specified.");
+      return;
+    }
+    setFile(f);
+    fetch(`/posts/${encodeURIComponent(f)}`)
+      .then((r) => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.text();
+      })
+      .then((t) => setTex(t))
+      .catch((e) => setError(String(e)));
+  }, []);
 
-  const postsDir = path.join(process.cwd(), "public", "posts");
-  const full = path.join(postsDir, file);
-  let tex = "";
-  try {
-    tex = await fs.promises.readFile(full, "utf8");
-  } catch (e: any) {
-    return <div className="text-red-600">Error reading file: {String(e.message || e)}</div>;
-  }
+  if (error) return <div className="text-red-600">{error}</div>;
+  if (!tex) return <div className="text-zinc-600">Loading...</div>;
 
-  return <ViewerClient tex={tex} filename={file} />;
+  return <ViewerClient tex={tex} filename={file ?? undefined} />;
 }
