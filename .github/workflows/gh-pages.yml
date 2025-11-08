@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -45,11 +45,22 @@ jobs:
             echo "next export failed or not supported for this project; proceeding to deploy public/ and out/ if available"
           fi
 
+      - name: Choose publish directory
+        id: choose
+        run: |
+          if [ -d "./out" ] && [ "$(ls -A out)" ]; then
+            echo "publish_dir=out" >> $GITHUB_OUTPUT
+          elif [ -d "./public" ] && [ "$(ls -A public)" ]; then
+            echo "publish_dir=public" >> $GITHUB_OUTPUT
+          else
+            echo "publish_dir=out" >> $GITHUB_OUTPUT
+          fi
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./out
-          # fallback to public if out doesn't exist
+          publish_dir: ${{ steps.choose.outputs.publish_dir }}
           publish_branch: gh-pages
+          allow_empty_commit: true
 
