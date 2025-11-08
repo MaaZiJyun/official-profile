@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+  "dev": "next dev",
+  "prebuild:convert": "node ./scripts/convert_tex.js",
+  "build": "npm run prebuild:convert && next build",
+  "start": "next start",
+  "lint": "eslint",
+  "deploy:ghpages": "echo Deploy is handled by GitHub Actions (see .github/workflows/gh-pages.yml)"
   },
   "dependencies": {
     "react": "19.2.0",

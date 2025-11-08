@@ -1,0 +1,55 @@
+name: Build and Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Pandoc
+        run: sudo apt-get update && sudo apt-get install -y pandoc
+
+      - name: Convert TeX to HTML
+        run: node ./scripts/convert_tex.js
+
+      - name: Build Next
+        run: npm run build
+
+      - name: Export static (optional)
+        run: |
+          # next export works only when your app is compatible with static export.
+          # For App Router projects this may not be supported. If export fails, consider
+          # hosting on Vercel or generating static files differently.
+          set -e
+          if npm run export --silent; then
+            echo "Exported to out/"
+          else
+            echo "next export failed or not supported for this project; proceeding to deploy public/ and out/ if available"
+          fi
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./out
+          # fallback to public if out doesn't exist
+          publish_branch: gh-pages
+
