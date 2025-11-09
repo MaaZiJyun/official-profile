@@ -28,10 +28,10 @@ export default function ProjectsPage() {
   ];
 
   return (
-    <div>
+    <div className="mt-4">
       {projects.map((p) => (
-        <div className="mt-6" key={p.title}>
-          <div className="rounded-lg border p-6 shadow-sm">
+        <div key={p.title}>
+          <div className="rounded-lg p-6">
             <div className="flex items-start justify-between">
               <div>
                 <Link href={p.href}>

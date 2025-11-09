@@ -12,16 +12,33 @@ export default function Nav() {
           <div>
             <ul className="flex gap-4">
               <li>
-                <Link href="/">Home</Link>
+                <Link className="hover:underline hover:text-red-600" href="/">
+                  HOME
+                </Link>
               </li>
               <li>
-                <Link href="/posts">Post</Link>
+                <Link
+                  className="hover:underline hover:text-red-600"
+                  href="/posts"
+                >
+                  POST
+                </Link>
               </li>
               <li>
-                <Link href="/projects">Project</Link>
+                <Link
+                  className="hover:underline hover:text-red-600"
+                  href="/projects"
+                >
+                  PROJECT
+                </Link>
               </li>
               <li>
-                <Link href="/education">Education</Link>
+                <Link
+                  className="hover:underline hover:text-red-600"
+                  href="/education"
+                >
+                  EDUCATION
+                </Link>
               </li>
             </ul>
           </div>

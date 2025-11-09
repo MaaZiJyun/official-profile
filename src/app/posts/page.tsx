@@ -69,15 +69,14 @@ export default async function PostsPage() {
   const posts = await loadTexPosts();
 
   return (
-    <div>
+    <div className="mt-4">
       {posts.length === 0 ? (
         <p className="mt-2 text-zinc-600">
           No .tex posts found in <code>/public/posts</code>.
         </p>
       ) : (
-        <div className="mt-4 flex flex-col gap-4">
+        <div className="flex flex-col gap-4">
           {posts.map((p) => {
-            const slug = p.file.replace(/\.tex$/, "");
             return (
               <article
                 key={p.file}
