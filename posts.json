@@ -1,16 +1,9 @@
 [
   {
-    "filename": "example.tex",
-    "name": "example",
+    "filename": "Minimum_Constellation_Size_for_Polar_LEO_Global_Coverage.tex",
+    "name": "Minimum_Constellation_Size_for_Polar_LEO_Global_Coverage",
     "title": "Minimum Constellation Size for Polar LEO Global Coverage",
     "excerpt": "Earth’s equatorial linear velocity: <span class=\"math display\">$$v_e = \\frac{2\\pi R_e}{T_e}$$</span>",
-    "htmlPath": "/posts_html/example.html"
-  },
-  {
-    "filename": "sample.tex",
-    "name": "sample",
-    "title": "Sample Article for Web Preview",
-    "excerpt": "This is a sample LaTeX document intended to test client-side conversion to HTML using latex.js. It includes a title, sections, and some simple text. Math like <span class=\"math inline\"><em>E</em> = <em>m</em><em>c</em><sup>2</sup></span> is inline and should be handled.",
-    "htmlPath": "/posts_html/sample.html"
+    "htmlPath": "/posts_html/Minimum_Constellation_Size_for_Polar_LEO_Global_Coverage.html"
   }
 ]
