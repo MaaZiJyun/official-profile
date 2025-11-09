@@ -1,0 +1,30 @@
+\documentclass{article}
+\title{Experiment on 90 Degree Constellation}
+\author{Zi Jyun Maa}
+\date{September 2025}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+This document reports an analytical method for calculating the minimum size of a constellation of LEO polar-orbiting satellites, 
+in which precise expressions for the number of orbital planes, 
+the number of satellites per orbit and the total number of satellites are obtained by modelling the mathematical relationships between the Earth's rotation, 
+the satellite orbital motions and the coverage requirements.
+Since the satellite orbits are polar orbits (with an inclination of 90°), 
+each orbital plane covers the entire range of latitudes (from the South Pole to the North Pole). 
+However, along the equator, 
+each orbital plane can only cover a single strip (with a width of $L_{swath}$). 
+The key point here is: within the time $t_{max}$, 
+due to Earth's rotation, the maximum offset in the equatorial direction between the coverage areas of adjacent orbital planes is $S^{equ}_{t_{max}}$. 
+To ensure seamless global coverage, 
+the orbital planes must be evenly distributed along the equator, 
+such that the equatorial distance between the coverage regions of adjacent orbital planes does not exceed $2 \cdot S^{equ}_{t_{max}}$.
+
+\section{Background}
+LaTeX is a typesetting system commonly used for scientific documents. This sample demonstrates a simple workflow where the raw .tex file is fetched by the browser and converted to HTML using a JS LaTeX renderer.
+
+\section{Conclusion}
+This is only a demo. For production use you may prefer server-side conversion (Pandoc, TeX→HTML) or prebuilt PDFs.
+
+\end{document}
