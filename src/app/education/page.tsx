@@ -7,25 +7,24 @@ export default function BiographyPage() {
       <div className="flex flex-col gap-6 md:flex-row">
         <div className="mt-4 space-y-4 text-zinc-700 md:w-2/3 text-justify">
           <p>
-            Zhiyuan Ma is a Master’s student in the Department of Computing at
-            The Hong Kong Polytechnic University, specializing in Blockchain
-            Technology. His coursework includes decentralized applications,
-            applied cryptography, distributed ledger technology, distributed
-            algorithms, and machine learning.
-          </p>
-
-          <p>
-            He completed his Bachelor of Software Engineering at University
-            Putra Malaysia with a GPA of 3.53/4.0 and Second Class Upper Honors.
-            His undergraduate curriculum covered Java programming, statistics,
-            discrete mathematics, web and mobile application development,
-            software architecture, and electronic commerce.
+            Zijyun Maa (Zhiyuan Ma) is currently pursuing an MSc in Blockchain Technology at
+            The Hong Kong Polytechnic University. His academic interests include
+            Software Engineering, Artificial Intelligence, Reinforcement
+            Learning, and Simulation for real-world problem solving. He obtained
+            his Bachelor’s degree in Software Engineering from Universiti Putra
+            Malaysia with Second Class Upper Honours. He also holds an IELTS
+            Overall score of 7.0 (Listening 7.0, Speaking 7.0, Reading 6.5,
+            Writing 7.0), indicating solid English proficiency.
           </p>
 
           <p>
             He has a solid foundation in software engineering and computer
-            science and continues to develop expertise in blockchain systems and
-            distributed technologies.
+            science and continues to develop expertise in simulation systems and
+            distributed technologies. He is an effective communicator and
+            collaborative learner with strong problem-solving skills. His
+            international study experience and diverse project background have
+            helped shape his adaptability and preparedness for long-term
+            research and development.
           </p>
         </div>
         <div className="mt-4 space-y-4 text-zinc-700 md:w-1/3 text-justify">
@@ -47,7 +46,7 @@ export default function BiographyPage() {
             ].map((item) => (
               <div
                 key={item.name}
-                className="flex items-center gap-3 rounded-lg border p-3 bg-white shadow-sm"
+                className="flex items-center gap-3 rounded-lg shadow-md p-3 text-center hover:scale-[1.05] hover:shadow-xl hover:cursor-pointer transition-transform group"
               >
                 <div className="flex-shrink-0">
                   <Image

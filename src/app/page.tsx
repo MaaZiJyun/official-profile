@@ -23,10 +23,16 @@ export default function Home() {
         <h1 className="text-xl font-bold underline">INTRO.</h1>
         <p>
           Zijyun Maa is a Master’s student in Blockchain Technology at The Hong
-          Kong Polytechnic University. He holds a B.S. in Software Engineering
-          from University Putra Malaysia and he speaks English with IELTS band 7
-          and native Mandarin.
+          Kong Polytechnic University. He studied his B.S. in Software
+          Engineering from University Putra Malaysia and he speaks English with
+          IELTS band 7 and native Mandarin.
         </p>
+        <a
+          className="text-red-600 italic hover:underline"
+          href="https://domuki.top"
+        >
+          More Interesting Things :)
+        </a>
       </div>
 
       <div className="mt-8">

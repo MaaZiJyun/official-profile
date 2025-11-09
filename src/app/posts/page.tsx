@@ -25,10 +25,13 @@ async function loadTexPosts(): Promise<Post[]> {
 
       // try to extract \title{...} or fallback to filename
       const titleMatch = raw.match(/\\title\{([^}]+)\}/);
-      const title = titleMatch ? titleMatch[1].trim() : file.replace(/\.tex$/, "");
+      const title = titleMatch
+        ? titleMatch[1].trim()
+        : file.replace(/\.tex$/, "");
 
       // simple excerpt: take first non-empty paragraph, but strip LaTeX markup
-      const paragraphMatch = raw.split(/\r?\n\r?\n/).find((p) => p.trim().length > 0) ?? "";
+      const paragraphMatch =
+        raw.split(/\r?\n\r?\n/).find((p) => p.trim().length > 0) ?? "";
 
       function stripTex(text: string) {
         if (!text) return "";
@@ -37,7 +40,10 @@ async function loadTexPosts(): Promise<Post[]> {
         // remove environments \begin{...}...\end{...}
         s = s.replace(/\\begin\{[^}]+\}[\s\S]*?\\end\{[^}]+\}/g, " ");
         // remove display and inline math ($...$, $$...$$, \[...\], \(...\))
-        s = s.replace(/\$\$[\s\S]*?\$\$|\$[^$]*\$|\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)/g, " ");
+        s = s.replace(
+          /\$\$[\s\S]*?\$\$|\$[^$]*\$|\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)/g,
+          " "
+        );
         // replace commands with braced argument: \cmd[opt]{arg} or \cmd{arg} -> keep arg
         s = s.replace(/\\[a-zA-Z@]+\*?\s*(?:\[[^\]]*\])?\s*\{([^}]*)\}/g, "$1");
         // remove remaining commands like \cmd or \cmd* or \cmd[opt]
@@ -52,7 +58,7 @@ async function loadTexPosts(): Promise<Post[]> {
       const cleaned = stripTex(paragraphMatch);
       const excerpt = cleaned.slice(0, 300);
 
-  return { file, title, excerpt };
+      return { file, title, excerpt };
     })
   );
 
@@ -64,27 +70,37 @@ export default async function PostsPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">Posts</h1>
-
       {posts.length === 0 ? (
-        <p className="mt-2 text-zinc-600">No .tex posts found in <code>/public/posts</code>.</p>
+        <p className="mt-2 text-zinc-600">
+          No .tex posts found in <code>/public/posts</code>.
+        </p>
       ) : (
         <div className="mt-4 flex flex-col gap-4">
           {posts.map((p) => {
-            const slug = p.file.replace(/\.tex$/, '');
+            const slug = p.file.replace(/\.tex$/, "");
             return (
-            <article key={p.file} className="hover:border-l-2 hover:border-red-600 py-2 px-4">
-              <a href={`/posts/render?file=${encodeURIComponent(p.file)}`} className="text-lg font-semibold text-foreground">
-                {p.title}
-              </a>
-              <p className="mt-2 text-sm text-zinc-600">{p.excerpt}...</p>
-              <div className="mt-2">
-                <a className="text-sm text-red-600 underline" href={`/posts/render?file=${encodeURIComponent(p.file)}`}>
-                  Preview
+              <article
+                key={p.file}
+                className="hover:border-l-2 hover:border-red-600 py-2 px-4"
+              >
+                <a
+                  href={`/posts/render?file=${encodeURIComponent(p.file)}`}
+                  className="text-xl font-semibold text-foreground"
+                >
+                  {p.title}
                 </a>
-              </div>
-            </article>
-          )})}
+                <p className="mt-2 text-sm text-zinc-600">{p.excerpt}...</p>
+                <div className="mt-2">
+                  <a
+                    className="text-sm text-red-600 underline"
+                    href={`/posts/render?file=${encodeURIComponent(p.file)}`}
+                  >
+                    Preview
+                  </a>
+                </div>
+              </article>
+            );
+          })}
         </div>
       )}
     </div>
