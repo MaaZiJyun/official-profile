@@ -1,5 +1,5 @@
 \documentclass{article}
-\title{Experiment on 90 Degree Constellation}
+\title{Minimum Constellation Size for Polar LEO Global Coverage}
 \author{Zi Jyun Maa}
 \date{September 2025}
 
@@ -7,24 +7,71 @@
 \maketitle
 
 \section{Introduction}
-This document reports an analytical method for calculating the minimum size of a constellation of LEO polar-orbiting satellites, 
-in which precise expressions for the number of orbital planes, 
-the number of satellites per orbit and the total number of satellites are obtained by modelling the mathematical relationships between the Earth's rotation, 
-the satellite orbital motions and the coverage requirements.
-Since the satellite orbits are polar orbits (with an inclination of 90°), 
-each orbital plane covers the entire range of latitudes (from the South Pole to the North Pole). 
-However, along the equator, 
-each orbital plane can only cover a single strip (with a width of $L_{swath}$). 
-The key point here is: within the time $t_{max}$, 
-due to Earth's rotation, the maximum offset in the equatorial direction between the coverage areas of adjacent orbital planes is $S^{equ}_{t_{max}}$. 
-To ensure seamless global coverage, 
-the orbital planes must be evenly distributed along the equator, 
-such that the equatorial distance between the coverage regions of adjacent orbital planes does not exceed $2 \cdot S^{equ}_{t_{max}}$.
 
-\section{Background}
-LaTeX is a typesetting system commonly used for scientific documents. This sample demonstrates a simple workflow where the raw .tex file is fetched by the browser and converted to HTML using a JS LaTeX renderer.
+This document presents an analytical method for determining the minimum size of a LEO polar-orbiting satellite constellation. Closed-form expressions for the required number of orbital planes, satellites per orbit, and total satellite count are derived by modelling the relationships between Earth's rotation, satellite orbital motion, and coverage requirements.
+
+For polar orbits (inclination $90^\circ$), each orbital plane covers all latitudes, but along the equator each plane covers only a strip of width $L_{\text{swath}}$. Within the allowed response time $t_{\max}$, Earth’s rotation causes a maximum equatorial offset of $S^{\text{equ}}_{t_{\max}}$. To ensure seamless global coverage, the spacing between adjacent orbital planes must not exceed $2 \cdot S^{\text{equ}}_{t_{\max}}$.
+
+\section{Definitions}
+$R_e$, $T_e$, $t_{\max}$, $L_{\text{swath}}$, $R_o$, $T_o$
+
+\section{Formula Derivation}
+
+Earth’s equatorial linear velocity:
+\begin{equation}
+v_e = \frac{2\pi R_e}{T_e}
+\end{equation}
+
+Equatorial displacement within $t_{\max}$:
+\begin{equation}
+S^{\text{equ}}_{t_{\max}} = \frac{2\pi R_e}{T_e}\, t_{\max}
+\end{equation}
+
+Number of orbital planes:
+\begin{equation}
+n_{\text{orb}} = \frac{T_e}{2t_{\max}}
+\end{equation}
+
+Time for Earth’s rotation to shift by one swath:
+\begin{equation}
+t_{\text{swath}} = \frac{L_{\text{swath}}T_e}{2\pi R_e}
+\end{equation}
+
+Satellite displacement during $t_{\text{swath}}$:
+\begin{equation}
+S^{\text{sat}}_{t_{\text{swath}}} = \frac{R_o L_{\text{swath}}T_e}{T_o R_e}
+\end{equation}
+
+Satellites required per orbit:
+\begin{equation}
+n_{\text{sat/orb}} = \frac{2\pi R_e T_o}{L_{\text{swath}}T_e}
+\end{equation}
+
+Total constellation size:
+\begin{equation}
+n_{\text{sat}} = \frac{\pi R_e T_o}{L_{\text{swath}} t_{\max}}
+\end{equation}
+
+\section{Example}
+
+In case of altitude 500 km, 
+inclination 90$^\circ$, 
+FOV 30$^\circ$,
+Orbital planes: 4
+Satellites per plane: 10
+Total satellites: 40.
+
+\section{Analysis}
+
+When the number of orbital planes is fixed, increasing satellites per plane reduces latency until full temporal coverage is achieved. When satellites per plane are fixed, increasing the number of orbital planes significantly improves global coverage. Configurations with four or more planes achieve a valid experiment ratio of 1 when each plane carries 10 satellites. Constellations with fewer than four planes cannot meet global coverage requirements regardless of satellite count.
+
+Scoring metric:
+\begin{equation}
+\mathrm{score} = \alpha\frac{1}{n} + \beta\frac{1}{t_{2,\mathrm{median}}} + \gamma\ln(r_{\mathrm{sc}})
+\end{equation}
 
 \section{Conclusion}
-This is only a demo. For production use you may prefer server-side conversion (Pandoc, TeX→HTML) or prebuilt PDFs.
+
+The number of orbital planes determines global coverage and spatial uniformity, while satellites per plane determine ground sampling density. Together, they define the minimum constellation size needed to satisfy the required temporal and spatial coverage constraints.
 
 \end{document}
