@@ -1,5 +1,12 @@
 [
   {
+    "filename": "example.tex",
+    "name": "example",
+    "title": "Experiment on 90 Degree Constellation",
+    "excerpt": "LaTeX is a typesetting system commonly used for scientific documents. This sample demonstrates a simple workflow where the raw .tex file is fetched by the browser and converted to HTML using a JS LaTeX renderer.",
+    "htmlPath": "/posts_html/example.html"
+  },
+  {
     "filename": "sample.tex",
     "name": "sample",
     "title": "Sample Article for Web Preview",
