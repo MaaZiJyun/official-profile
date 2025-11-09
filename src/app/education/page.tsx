@@ -46,7 +46,7 @@ export default function BiographyPage() {
             ].map((item) => (
               <div
                 key={item.name}
-                className="flex items-center gap-3 rounded-lg shadow-md p-3 text-center hover:scale-[1.05] hover:shadow-xl hover:cursor-pointer transition-transform group"
+                className="flex items-center gap-3 rounded-lg shadow-md p-3 hover:scale-[1.05] hover:shadow-xl hover:cursor-pointer transition-transform group"
               >
                 <div className="flex-shrink-0">
                   <Image
