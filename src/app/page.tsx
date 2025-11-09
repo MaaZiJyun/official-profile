@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -58,13 +59,28 @@ export default function Home() {
               desc: "A blockchain webapp for scalable, transparent supplychain management.",
             },
           ].map((p) => (
-            <div key={p.title} className="rounded-lg shadow-md bg-white p-3 text-center">
-              <div className="h-32 w-full overflow-hidden">
-                <Image src={p.img} alt={p.title} width={400} height={200} className="mx-auto h-full w-full object-cover rounded-md" />
+            <Link
+              href="/projects"
+              key={p.title}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <div className="rounded-lg shadow-md p-3 text-center hover:scale-[1.05] hover:shadow-xl hover:cursor-pointer transition-transform group">
+                <div className="h-32 w-full overflow-hidden">
+                  <Image
+                    src={p.img}
+                    alt={p.title}
+                    width={400}
+                    height={200}
+                    className="mx-auto h-full w-full object-cover rounded-md filter grayscale group-hover:grayscale-0 transition duration-300 ease-in-out"
+                  />
+                </div>
+                <div className="mt-3 text-lg font-semibold">{p.title}</div>
+                <div className="mt-1 text-sm text-zinc-600 italic">
+                  {p.desc}
+                </div>
               </div>
-              <div className="mt-3 text-lg font-semibold">{p.title}</div>
-              <div className="mt-1 text-sm text-zinc-600 italic">{p.desc}</div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

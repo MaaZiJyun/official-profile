@@ -7,7 +7,7 @@ export default function ProjectsPage() {
       <h1 className="text-2xl font-bold">Projects</h1>
 
       <div className="mt-6">
-        <div className="rounded-lg border bg-white p-6 shadow-sm">
+        <div className="rounded-lg border p-6 shadow-sm">
           <div className="flex items-start justify-between">
             <div>
               <Link href="https://momcare-landingpage.vercel.app/">
@@ -56,7 +56,7 @@ export default function ProjectsPage() {
         </div>
       </div>
       <div className="mt-6">
-        <div className="rounded-lg border bg-white p-6 shadow-sm">
+        <div className="rounded-lg border p-6 shadow-sm">
           <div className="flex items-start justify-between">
             <div>
               <Link href="https://play.google.com/store/apps/details?id=com.eos_credit.eos_credit&hl=en">

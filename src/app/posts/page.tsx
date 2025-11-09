@@ -27,11 +27,32 @@ async function loadTexPosts(): Promise<Post[]> {
       const titleMatch = raw.match(/\\title\{([^}]+)\}/);
       const title = titleMatch ? titleMatch[1].trim() : file.replace(/\.tex$/, "");
 
-      // simple excerpt: first paragraph or first 200 chars
+      // simple excerpt: take first non-empty paragraph, but strip LaTeX markup
       const paragraphMatch = raw.split(/\r?\n\r?\n/).find((p) => p.trim().length > 0) ?? "";
-      const excerpt = paragraphMatch.replace(/\s+/g, " ").trim().slice(0, 300);
 
-      return { file, title, excerpt };
+      function stripTex(text: string) {
+        if (!text) return "";
+        // remove comments
+        let s = text.replace(/%.*$/gm, "");
+        // remove environments \begin{...}...\end{...}
+        s = s.replace(/\\begin\{[^}]+\}[\s\S]*?\\end\{[^}]+\}/g, " ");
+        // remove display and inline math ($...$, $$...$$, \[...\], \(...\))
+        s = s.replace(/\$\$[\s\S]*?\$\$|\$[^$]*\$|\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)/g, " ");
+        // replace commands with braced argument: \cmd[opt]{arg} or \cmd{arg} -> keep arg
+        s = s.replace(/\\[a-zA-Z@]+\*?\s*(?:\[[^\]]*\])?\s*\{([^}]*)\}/g, "$1");
+        // remove remaining commands like \cmd or \cmd* or \cmd[opt]
+        s = s.replace(/\\[a-zA-Z@]+\*?\s*(?:\[[^\]]*\])?/g, " ");
+        // remove leftover braces
+        s = s.replace(/[{}]/g, " ");
+        // collapse whitespace
+        s = s.replace(/\s+/g, " ").trim();
+        return s;
+      }
+
+      const cleaned = stripTex(paragraphMatch);
+      const excerpt = cleaned.slice(0, 300);
+
+  return { file, title, excerpt };
     })
   );
 
@@ -52,13 +73,13 @@ export default async function PostsPage() {
           {posts.map((p) => {
             const slug = p.file.replace(/\.tex$/, '');
             return (
-            <article key={p.file} className="rounded-lg border bg-white p-4">
-              <a href={`/posts/${encodeURIComponent(slug)}`} className="text-lg font-semibold text-foreground">
+            <article key={p.file} className="hover:border-l-2 hover:border-red-600 py-2 px-4">
+              <a href={`/posts/render?file=${encodeURIComponent(p.file)}`} className="text-lg font-semibold text-foreground">
                 {p.title}
               </a>
               <p className="mt-2 text-sm text-zinc-600">{p.excerpt}...</p>
               <div className="mt-2">
-                <a className="text-sm text-blue-600 underline" href={`/posts/render?file=${encodeURIComponent(p.file)}`}>
+                <a className="text-sm text-red-600 underline" href={`/posts/render?file=${encodeURIComponent(p.file)}`}>
                   Preview
                 </a>
               </div>
