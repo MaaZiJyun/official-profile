@@ -2,8 +2,8 @@
   {
     "filename": "example.tex",
     "name": "example",
-    "title": "Experiment on 90 Degree Constellation",
-    "excerpt": "LaTeX is a typesetting system commonly used for scientific documents. This sample demonstrates a simple workflow where the raw .tex file is fetched by the browser and converted to HTML using a JS LaTeX renderer.",
+    "title": "Minimum Constellation Size for Polar LEO Global Coverage",
+    "excerpt": "Earth’s equatorial linear velocity: <span class=\"math display\">$$v_e = \\frac{2\\pi R_e}{T_e}$$</span>",
     "htmlPath": "/posts_html/example.html"
   },
   {
