@@ -21,6 +21,28 @@ export default function ViewerClient({ tex, filename }: { tex: string; filename?
           });
         }
 
+        // Ensure the latex.js stylesheet is present so fallback/plaintext
+        // representations are styled/hidden and the rendered math displays correctly.
+        if (!document.querySelector('link[data-latexjs-stylesheet]')) {
+          const link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.href = 'https://cdn.jsdelivr.net/npm/latex.js@0.11.1/dist/css/latex.css';
+          link.setAttribute('data-latexjs-stylesheet', '1');
+          document.head.appendChild(link);
+        }
+
+        // Inject a small fix to hide KaTeX plaintext fallback elements
+        // (class `katex-html`) which otherwise can show duplicate text like "tmax".
+        if (!document.querySelector('style[data-latexjs-fix]')) {
+          const st = document.createElement('style');
+          st.setAttribute('data-latexjs-fix', '1');
+          st.textContent = `
+            /* Hide KaTeX plaintext fallback; keep MathML for accessibility */
+            .katex-html { display: none !important; }
+          `;
+          document.head.appendChild(st);
+        }
+
         // @ts-ignore
         const latex = (window as any).latex || (window as any).latexjs;
         if (!latex) throw new Error("latex.js not available on window");
