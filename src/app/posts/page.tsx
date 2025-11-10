@@ -78,26 +78,20 @@ export default async function PostsPage() {
         <div className="flex flex-col gap-4">
           {posts.map((p) => {
             return (
-              <article
+              <a
+                href={`/posts/render?file=${encodeURIComponent(p.file)}`}
                 key={p.file}
-                className="hover:border-l-2 hover:border-red-600 py-2 px-4"
               >
-                <a
-                  href={`/posts/render?file=${encodeURIComponent(p.file)}`}
-                  className="text-xl font-semibold text-foreground"
-                >
-                  {p.title}
-                </a>
-                <p className="mt-2 text-sm text-zinc-600">{p.excerpt}...</p>
-                <div className="mt-2">
-                  <a
-                    className="text-sm text-red-600 underline"
-                    href={`/posts/render?file=${encodeURIComponent(p.file)}`}
-                  >
-                    Preview
-                  </a>
-                </div>
-              </article>
+                <article className="rounded-lg hover:cursor-pointer py-3 px-4 hover:scale-[1.05] hover:shadow-xl transition-transform group">
+                  <p className="text-xl font-semibold text-foreground">
+                    {p.title}
+                  </p>
+                  <p className="mt-1 text-sm text-zinc-600">{p.excerpt}...</p>
+                  <div className="mt-2">
+                    <p className="text-sm text-red-600 underline">Preview</p>
+                  </div>
+                </article>
+              </a>
             );
           })}
         </div>
