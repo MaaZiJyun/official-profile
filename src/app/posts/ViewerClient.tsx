@@ -22,15 +22,23 @@ export default function ViewerClient({
     // ----------------------------------------------------
     // 0. Remove document-level commands
     // ----------------------------------------------------
+    // Capture title/author/date if present so we can re-insert them as HTML later.
+    let capturedTitle = "";
+    let capturedAuthor = "";
+    let capturedDate = "";
+    const tMatch = out.match(/\\title\{([\s\S]*?)\}/);
+    if (tMatch) capturedTitle = tMatch[1].trim();
+    const aMatch = out.match(/\\author\{([\s\S]*?)\}/);
+    if (aMatch) capturedAuthor = aMatch[1].trim();
+    const dMatch = out.match(/\\date\{([\s\S]*?)\}/);
+    if (dMatch) capturedDate = dMatch[1].trim();
+
+    // Remove common document-level commands (but preserve title/author/date values captured above)
     const docLevelCommands = [
       /\\documentclass\{[\s\S]*?}/g,
       /\\usepackage\{[\s\S]*?}/g,
       /\\begin\{document\}/g,
       /\\end\{document\}/g,
-      /\\title\{[\s\S]*?}/g,
-      /\\author\{[\s\S]*?}/g,
-      /\\date\{[\s\S]*?}/g,
-      /\\maketitle/g,
       /\\tableofcontents/g,
       /\\bibliographystyle\{[\s\S]*?}/g,
       /\\bibliography\{[\s\S]*?}/g,
@@ -38,6 +46,19 @@ export default function ViewerClient({
     for (const pattern of docLevelCommands) {
       out = out.replace(pattern, "");
     }
+
+    // Replace \maketitle with a token so we can render title/author/date in HTML
+    out = out.replace(/\\maketitle/g, () => {
+      if (createToken) {
+        return createToken('maketitle', { title: capturedTitle, author: capturedAuthor, date: capturedDate });
+      }
+      return '';
+    });
+
+    // Clean out any leftover explicit title/author/date declarations
+    out = out.replace(/\\title\{[\s\S]*?}/g, "");
+    out = out.replace(/\\author\{[\s\S]*?}/g, "");
+    out = out.replace(/\\date\{[\s\S]*?}/g, "");
 
     // ----------------------------------------------------
     // 0.5 Clean invalid unicode (critical!)
@@ -227,6 +248,12 @@ export default function ViewerClient({
           const entry = tokenMap.get(m);
           if (!entry) return '';
           const { type, payload } = entry;
+          if (type === 'maketitle') {
+            const t = String(payload.title || '').trim();
+            const a = String(payload.author || '').trim();
+            const d = String(payload.date || '').trim();
+            return `<div class=\"post-maketitle\" style=\"text-align:center; margin-bottom:1rem;\">${t ? `<div class=\"title\" style=\"font-size:1.5rem; font-weight:700;\">${t}</div>` : ''}${a ? `<div class=\"author\" style=\"margin-top:0.25rem;\">${a}</div>` : ''}${d ? `<div class=\"date\" style=\"margin-top:0.15rem; color:#6b7280;\">${d}</div>` : ''}</div>`;
+          }
           if (type === 'img') {
             // Build a safe image tag
             const src = payload.path || '';
