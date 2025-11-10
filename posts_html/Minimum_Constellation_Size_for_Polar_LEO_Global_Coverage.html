@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="Zi Jyun Maa" />
-  <title>Minimum Constellation Size for Polar LEO Global Coverage</title>
+  <title>How many satellites and how much time are needed for full global coverage?</title>
   <style>
     html {
       color: #1a1a1a;
@@ -167,83 +167,119 @@
 </head>
 <body>
 <header id="title-block-header">
-<h1 class="title">Minimum Constellation Size for Polar LEO Global
-Coverage</h1>
+<h1 class="title">How many satellites and how much time are needed for
+full global coverage?</h1>
 <p class="author">Zi Jyun Maa</p>
 <p class="date">September 2025</p>
 </header>
 <h1 id="introduction">Introduction</h1>
-<p>This document presents an analytical method for determining the
-minimum size of a LEO polar-orbiting satellite constellation.
-Closed-form expressions for the required number of orbital planes,
-satellites per orbit, and total satellite count are derived by modelling
-the relationships between Earth’s rotation, satellite orbital motion,
-and coverage requirements.</p>
-<p>For polar orbits (inclination <span
-class="math inline">90<sup>∘</sup></span>), each orbital plane covers
-all latitudes, but along the equator each plane covers only a strip of
+<p>Imagine we want to cover the entire Earth. How many orbital planes do
+we need? And how many satellites should we place in each plane? Below is
+an exploration of how these quantities relate to Earth’s rotation,
+orbital motion, and coverage requirements. Because we are considering
+about full global coverage, 90° inclination (polar) orbits is the only
+option.</p>
+<h1 id="why-does-earths-rotation-matter">Why does Earth’s rotation
+matter?</h1>
+<p>Even though a polar orbit (inclination <span
+class="math inline">90<sup>∘</sup></span>) sweeps across all latitudes,
+along the equator each orbital plane only covers a narrow strip with
 width <span class="math inline"><em>L</em><sub>swath</sub></span>.
-Within the allowed response time <span
-class="math inline"><em>t</em><sub>max</sub></span>, Earth’s rotation
-causes a maximum equatorial offset of <span
-class="math inline"><em>S</em><sub><em>t</em><sub>max</sub></sub><sup>equ</sup></span>.
-To ensure seamless global coverage, the spacing between adjacent orbital
-planes must not exceed <span
-class="math inline">2 ⋅ <em>S</em><sub><em>t</em><sub>max</sub></sub><sup>equ</sup></span>.</p>
-<h1 id="definitions">Definitions</h1>
-<p><span class="math inline"><em>R</em><sub><em>e</em></sub></span>,
-<span class="math inline"><em>T</em><sub><em>e</em></sub></span>, <span
-class="math inline"><em>t</em><sub>max</sub></span>, <span
-class="math inline"><em>L</em><sub>swath</sub></span>, <span
-class="math inline"><em>R</em><sub><em>o</em></sub></span>, <span
-class="math inline"><em>T</em><sub><em>o</em></sub></span></p>
-<h1 id="formula-derivation">Formula Derivation</h1>
-<p>Earth’s equatorial linear velocity: <span class="math display">$$v_e
-= \frac{2\pi R_e}{T_e}$$</span></p>
-<p>Equatorial displacement within <span
-class="math inline"><em>t</em><sub>max</sub></span>: <span
-class="math display">$$S^{\text{equ}}_{t_{\max}} = \frac{2\pi
-R_e}{T_e}\, t_{\max}$$</span></p>
-<p>Number of orbital planes: <span class="math display">$$n_{\text{orb}}
-= \frac{T_e}{2t_{\max}}$$</span></p>
-<p>Time for Earth’s rotation to shift by one swath: <span
-class="math display">$$t_{\text{swath}} =
-\frac{L_{\text{swath}}T_e}{2\pi R_e}$$</span></p>
-<p>Satellite displacement during <span
-class="math inline"><em>t</em><sub>swath</sub></span>: <span
-class="math display">$$S^{\text{sat}}_{t_{\text{swath}}} = \frac{R_o
-L_{\text{swath}}T_e}{T_o R_e}$$</span></p>
-<p>Satellites required per orbit: <span
-class="math display">$$n_{\text{sat/orb}} = \frac{2\pi R_e
-T_o}{L_{\text{swath}}T_e}$$</span></p>
-<p>Total constellation size: <span class="math display">$$n_{\text{sat}}
-= \frac{\pi R_e T_o}{L_{\text{swath}} t_{\max}}$$</span></p>
-<h1 id="example">Example</h1>
-<p>In case of altitude 500 km, inclination 90<span
-class="math inline"><sup>∘</sup></span>, FOV 30<span
-class="math inline"><sup>∘</sup></span>, Orbital planes: 4 Satellites
-per plane: 10 Total satellites: 40.</p>
+Within a maximum allowed response time <span
+class="math inline"><em>t</em><sub>max</sub></span>, Earth rotates,
+causing an equatorial displacement:</p>
+<p><span class="math display">$$v_{\oplus} = \frac{2\pi
+R_{\oplus}}{T_{\oplus}}$$</span> where <span
+class="math inline"><em>R</em><sub>⊕</sub></span> is Earth’s radius and
+<span class="math inline"><em>T</em><sub>⊕</sub></span> is Earth’s
+rotation period (about 24 hours). So in time <span
+class="math inline"><em>t</em><sub>max</sub></span>, the ground track
+shifts by:</p>
+<p><span
+class="math display"><em>S</em><sub>equ</sub> = <em>v</em><sub>⊕</sub> ⋅ <em>T</em><sub>max</sub></span>
+where <span class="math inline"><em>S</em><sub>equ</sub></span> is the
+maximum distance Earth’s rotation can cause the ground track to shift on
+equator within the allowed response time. This means each orbital plane
+can only cover a strip of width <span
+class="math inline"><em>L</em><sub>swath</sub></span> plus this
+shift:</p>
 <figure id="fig:constellation-example">
 <img
 src="/posts/Minimum_Constellation_Size_for_Polar_LEO_Global_Coverage/001.png"
 style="width:80.0%" />
-<figcaption>Constellation schematic (example)</figcaption>
+<figcaption>Swath coverage from one orbital plane, considering Earth’s
+rotation over time max.</figcaption>
 </figure>
-<h1 id="analysis">Analysis</h1>
-<p>When the number of orbital planes is fixed, increasing satellites per
-plane reduces latency until full temporal coverage is achieved. When
-satellites per plane are fixed, increasing the number of orbital planes
-significantly improves global coverage. Configurations with four or more
-planes achieve a valid experiment ratio of 1 when each plane carries 10
-satellites. Constellations with fewer than four planes cannot meet
-global coverage requirements regardless of satellite count.</p>
-<p>Scoring metric: <span class="math display">$$\mathrm{score} =
-\alpha\frac{1}{n} + \beta\frac{1}{t_{2,\mathrm{median}}} +
-\gamma\ln(r_{\mathrm{sc}})$$</span></p>
+<p>So the first question becomes:</p>
+<p><strong>How many such strips are needed so that Earth’s rotation
+never leaves a gap?</strong></p>
+<p>This gives the minimum number of orbital planes:</p>
+<p><span class="math display">$$n_{\text{orb}} = \frac{T_{\oplus}}{2
+T_{\text{max}}}$$</span> where <span
+class="math inline"><em>n</em><sub><em>o</em><em>r</em><em>b</em></sub></span>
+is the number of orbital planes needed.</p>
+<figure id="fig:constellation-example">
+<img
+src="/posts/Minimum_Constellation_Size_for_Polar_LEO_Global_Coverage/002.png"
+style="width:80.0%" />
+<figcaption>Swath coverage from many orbital planes, considering Earth’s
+rotation over time max.</figcaption>
+</figure>
+<h1 id="how-fast-does-each-orbit-move-to-the-next-strip">How fast does
+each orbit “move” to the next strip?</h1>
+<p>To understand spacing along each orbit, we ask: How long until Earth
+rotates enough that the ground track shifts by one swath width?</p>
+<p><span class="math display">$$t_{\text{swath}} =
+\frac{L_{\text{swath}} T_{\oplus}}{2\pi R_{\oplus}}$$</span> where <span
+class="math inline"><em>t</em><sub>swath</sub></span> is the time it
+takes for Earth’s rotation to shift the ground track by one swath
+width.</p>
+<p>And how far does a satellite travel in orbit during that time?</p>
+<p><span class="math display">$$S_{\text{orb}} = \frac{R_{\text{orb}}
+L_{\text{swath}} T_{\oplus}}{T_{\text{orb}} R_{\oplus}}$$</span> where
+<span class="math inline"><em>R</em><sub>orb</sub></span> is the orbital
+radius and <span class="math inline"><em>T</em><sub>orb</sub></span> is
+the orbital period. This tells us the distance along the orbit that
+corresponds to one swath width on the ground. To ensure continuous
+coverage, we need to place satellites along the orbit such that the
+spacing does not exceed this distance.</p>
+<p>This tells us the maximum spacing between satellites in the same
+plane. So we get:</p>
+<p><span class="math display">$$n_{\text{sats/orb}} = \frac{2\pi
+R_{\oplus} T_{\text{orb}}}{L_{\text{swath}} T_{\oplus}}$$</span> where
+<span class="math inline"><em>n</em><sub>sats/orb</sub></span> is the
+number of satellites needed per orbital plane.</p>
+<h1 id="how-many-satellites-in-total">How many satellites in total?</h1>
+<p>Just multiply orbital planes by satellites per plane:</p>
+<p><span class="math display">$$n_{\text{sat}} = \frac{\pi R_{\oplus}
+T_{\text{orb}}}{L_{\text{swath}} T_{\text{max}}}$$</span> where <span
+class="math inline"><em>n</em><sub>sat</sub></span> is the total number
+of satellites needed for full global coverage within the specified
+response time.</p>
+<figure id="fig:constellation-example">
+<img
+src="/posts/Minimum_Constellation_Size_for_Polar_LEO_Global_Coverage/003.png"
+style="width:60.0%" />
+<figcaption>Satellite motion and Earth rotation.</figcaption>
+</figure>
+<h1 id="a-concrete-example">A concrete example</h1>
+<p>For: altitude = 500 km; inclination = <span
+class="math inline">90<sup>∘</sup></span>; field of view = <span
+class="math inline">30<sup>∘</sup></span>, We get: 4 orbital planes, 10
+satellites per plane, and 40 satellites total.</p>
+<figure id="fig:constellation-example">
+<img
+src="/posts/Minimum_Constellation_Size_for_Polar_LEO_Global_Coverage/004.png"
+style="width:60.0%" />
+<figcaption>Coverage example with 4 orbital planes and 10 satellites per
+plane.</figcaption>
+</figure>
 <h1 id="conclusion">Conclusion</h1>
-<p>The number of orbital planes determines global coverage and spatial
-uniformity, while satellites per plane determine ground sampling
-density. Together, they define the minimum constellation size needed to
-satisfy the required temporal and spatial coverage constraints.</p>
+<p>In simple terms, the number of orbital planes directly affects the
+spatial coverage and regional uniformity of the constellation over the
+Earth’s surface within a given time period, while the number of
+satellites on each orbital plane determines the spatial sampling density
+of ground observations within the same time period, i.e., the
+granularity of coverage.</p>
 </body>
 </html>

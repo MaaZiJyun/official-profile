@@ -2,8 +2,8 @@
   {
     "filename": "Minimum_Constellation_Size_for_Polar_LEO_Global_Coverage.tex",
     "name": "Minimum_Constellation_Size_for_Polar_LEO_Global_Coverage",
-    "title": "Minimum Constellation Size for Polar LEO Global Coverage",
-    "excerpt": "Earth’s equatorial linear velocity: <span class=\"math display\">$$v_e = \\frac{2\\pi R_e}{T_e}$$</span>",
+    "title": "How many satellites and how much time are needed for full global coverage?",
+    "excerpt": "So the first question becomes:",
     "htmlPath": "/posts_html/Minimum_Constellation_Size_for_Polar_LEO_Global_Coverage.html"
   }
 ]
