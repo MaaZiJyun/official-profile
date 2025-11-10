@@ -16,7 +16,7 @@ export default function Home() {
         <div>
           <h1 className="text-2xl font-bold">Zi Jyun, Maa</h1>
           <h1 className="text-4xl font-bold tracking-wider">馬志遠</h1>
-          <p className="mt-1 text-zinc-600">zy.maa@outlook.com</p>
+          <p className="mt-1 text-zinc-600">maazijyun@gmail.com</p>
         </div>
       </div>
 
@@ -29,7 +29,7 @@ export default function Home() {
           IELTS band 7 and native Mandarin.
         </p>
         <a className="text-red-600 hover:underline" href="https://domuki.top">
-          <span>もっと面白いもの</span>
+          <span>更多有趣內容</span>
           <span className="text-xl">☺</span>
         </a>
       </div>
