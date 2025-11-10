@@ -28,11 +28,9 @@ export default function Home() {
           Engineering from University Putra Malaysia and he speaks English with
           IELTS band 7 and native Mandarin.
         </p>
-        <a
-          className="text-red-600 italic hover:underline"
-          href="https://domuki.top"
-        >
-          More Interesting Things :)
+        <a className="text-red-600 hover:underline" href="https://domuki.top">
+          <span>もっと面白いもの</span>
+          <span className="text-xl">☺</span>
         </a>
       </div>
 
@@ -89,9 +87,7 @@ export default function Home() {
                 </div>
                 <div className="mt-3 text-lg font-semibold">{p.title}</div>
                 <div className="text-xs text-zinc-400">{p.year}</div>
-                <div className="mt-1 text-sm text-zinc-600">
-                  {p.desc}
-                </div>
+                <div className="mt-1 text-sm text-zinc-600">{p.desc}</div>
               </div>
             </Link>
           ))}
