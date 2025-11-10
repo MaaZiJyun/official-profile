@@ -22,7 +22,7 @@ export default function Home() {
       </div>
 
       <div className="mt-8 text-justify">
-        <h1 className="text-xl font-bold underline">INTRO.</h1>
+        <h1 className="text-xl font-bold underline">INTRODUCTION</h1>
         <p>
           Zijyun Maa is a Master’s student in Blockchain Technology at The Hong
           Kong Polytechnic University. He earned his B.S. in Software
