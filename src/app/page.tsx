@@ -1,6 +1,7 @@
 import { Yesteryear } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
+import CopyEmailButton from "../components/CopyEmailButton";
 
 export default function Home() {
   return (
@@ -16,7 +17,7 @@ export default function Home() {
         <div>
           <h1 className="text-2xl font-bold">Zi Jyun, Maa</h1>
           <h1 className="text-3xl font-bold tracking-wider">馬志遠</h1>
-          <p className="mt-1 text-zinc-600">maazijyun[at]gmail[dot]com</p>
+          <CopyEmailButton email="maazijyun@gmail.com" display={"maazijyun[at]gmail[dot]com"} />
         </div>
       </div>
 
@@ -24,12 +25,12 @@ export default function Home() {
         <h1 className="text-xl font-bold underline">INTRO.</h1>
         <p>
           Zijyun Maa is a Master’s student in Blockchain Technology at The Hong
-          Kong Polytechnic University. He studied his B.S. in Software
-          Engineering from University Putra Malaysia and he speaks English with
-          IELTS band 7 and native Mandarin.
+          Kong Polytechnic University. He earned his B.S. in Software
+          Engineering from Universiti Putra Malaysia. He is a native Mandarin
+          speaker and is proficient in English, with an IELTS score of 7.
         </p>
         <a className="text-red-600 hover:underline" href="https://domuki.top">
-          <span className="text-sm">更多有趣內容</span>
+          <span className="text-sm">More Fun</span>
           <span className="text-xl">☺</span>
         </a>
       </div>

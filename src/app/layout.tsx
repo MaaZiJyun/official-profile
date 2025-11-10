@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`select-none ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <header className="border-b bg-white/50 dark:bg-black/50">
           <Nav />
