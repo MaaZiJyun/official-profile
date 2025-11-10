@@ -1,4 +1,7 @@
 \documentclass{article}
+\usepackage{graphicx}
+% latex.js may not parse \graphicspath reliably; comment it out and reference images by full or relative path
+% \graphicspath{{/posts/Minimum_Constellation_Size_for_Polar_LEO_Global_Coverage/}}
 \title{Minimum Constellation Size for Polar LEO Global Coverage}
 \author{Zi Jyun Maa}
 \date{September 2025}
@@ -60,6 +63,15 @@ FOV 30$^\circ$,
 Orbital planes: 4
 Satellites per plane: 10
 Total satellites: 40.
+
+% Example image insertion (use absolute site path or relative file path)
+\begin{figure}[ht]
+	\centering
+	% Use an absolute path from site root so browser-based renderers (latex.js) can fetch it:
+	\includegraphics[width=0.8\textwidth]{/posts/Minimum_Constellation_Size_for_Polar_LEO_Global_Coverage/001.png}
+	\caption{Constellation schematic (example)}
+	\label{fig:constellation-example}
+\end{figure}
 
 \section{Analysis}
 
