@@ -1,3 +1,4 @@
+import { Yesteryear } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -14,7 +15,7 @@ export default function Home() {
         />
         <div>
           <h1 className="text-2xl font-bold">Zi Jyun, Maa</h1>
-          <h1 className="text-4xl font-bold">馬志遠</h1>
+          <h1 className="text-4xl font-bold tracking-wider">馬志遠</h1>
           <p className="mt-1 text-zinc-600">zy.maa@outlook.com</p>
         </div>
       </div>
@@ -40,29 +41,34 @@ export default function Home() {
         <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
           {[
             {
-              img: "/momcare.png",
-              title: "Momcare",
-              desc: "Pregnancy health assistant application for pregnant women.",
-            },
-            {
-              img: "/eos.png",
-              title: "EOS Credit",
-              desc: "Mobile loan application as a intern. project for EOS Systems Sdn. Bhd.",
-            },
-            {
               img: "/simu.png",
               title: "Constellation Simulator",
+              year: "2025",
               desc: "A simulator for visualising EOM activities in a LEO constellation.",
-            },
-            {
-              img: "/cradle.png",
-              title: "Smart Cradle",
-              desc: "Final-year IoT project on baby-monitoring hardware and application development.",
             },
             {
               img: "/certsys.png",
               title: "Diamond Certificate System",
+              year: "2025",
               desc: "A blockchain webapp for scalable, transparent supplychain management.",
+            },
+            {
+              img: "/eos.png",
+              title: "EOS Credit",
+              year: "2023 – 2024",
+              desc: "Mobile loan application as a intern. project for EOS Systems Sdn. Bhd.",
+            },
+            {
+              img: "/cradle.png",
+              title: "Smart Cradle",
+              year: "2023",
+              desc: "Bachelor IoT project on baby-monitoring hardware and application development.",
+            },
+            {
+              img: "/momcare.png",
+              title: "Momcare",
+              year: "2021 – 2022",
+              desc: "Pregnancy health assistant application for pregnant women.",
             },
           ].map((p) => (
             <Link
@@ -82,7 +88,8 @@ export default function Home() {
                   />
                 </div>
                 <div className="mt-3 text-lg font-semibold">{p.title}</div>
-                <div className="mt-1 text-sm text-zinc-600 italic">
+                <div className="text-xs text-zinc-400">{p.year}</div>
+                <div className="mt-1 text-sm text-zinc-600">
                   {p.desc}
                 </div>
               </div>
