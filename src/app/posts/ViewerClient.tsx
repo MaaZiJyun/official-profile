@@ -1,91 +1,107 @@
 "use client";
+import React, { useEffect, useState } from "react";
 
-import { useEffect, useState } from "react";
-
-export default function ViewerClient({
-  tex,
-  filename,
-}: {
-  tex: string;
-  filename?: string;
-}) {
-  // Fallback: simple tabular -> HTML renderer for cases where latex.js fails
-  const renderTabularToHtml = (raw: string, colSpec?: string) => {
-    const letters = (colSpec || "").replace(/[^a-zA-Z]/g, "");
-    const colCount = Math.max(1, letters.length || (raw.split('\\\\')[0] || '').split('&').length);
-    const rows = raw
+export default function ViewerClient({ tex, filename }: { tex: string; filename?: string }) {
+  const renderTabularToHtml = (raw: string, colSpec: string) => {
+    // split into rows by LaTeX row separator
+    const rows = String(raw || "")
       .trim()
-      .split(/\\\\\s*\n?/)
-      .map((r: string) => r.trim())
-      .filter((r: string) => r.length > 0);
-    const esc = (s: string) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    const latexGlobal = typeof window !== 'undefined' ? (window as any).latex || (window as any).latexjs : null;
+      .split(/\\\\\s*\n?/) // split on \\\\ with optional newline
+      .map((r) => r.trim())
+      .filter((r) => r.length > 0);
 
-    const htmlRows = rows
-      .map((row: string) => {
-        if (/^\\hline\s*$/.test(row)) {
-          return `<tr class="hline"><td colspan="${colCount}" style="border-top:1px solid #e5e7eb;padding:0"></td></tr>`;
-        }
-        const rawCells = row
-          .split(/&/g)
-          .map((c: string) => c.replace(/\\hline/g, '').trim())
-          .map((c: string) => c.replace(/^}+/, ''));
+    // parse rows into cell arrays first
+    const rowsCells: Array<string[] | "__HLINE__"> = rows.map((row: string) => {
+      if (/^\\hline\s*$/.test(row)) return "__HLINE__";
+      const rawCells = row
+        .split(/&/g)
+        .map((c: string) => c.replace(/\\hline/g, "").trim())
+        .map((c: string) => c.replace(/^}+/, ""));
+      return rawCells;
+    });
+
+    // determine max columns
+    let maxCols = rowsCells.reduce((m, r) => (r === "__HLINE__" ? m : Math.max(m, (r as string[]).length)), 0);
+
+    // trim trailing empty columns (columns that are empty for all non-hline rows)
+    const isEmptyAtCol = (col: number) => {
+      for (const r of rowsCells) {
+        if (r === "__HLINE__") continue;
+        const v = (r as string[])[col];
+        if (v && v.trim() !== "") return false;
+      }
+      return true;
+    };
+    while (maxCols > 0 && isEmptyAtCol(maxCols - 1)) {
+      maxCols -= 1;
+    }
+
+    const esc = (s: string) =>
+      String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+    const latexGlobal = (typeof window !== "undefined" && ((window as any).latex || (window as any).latexjs)) || null;
+
+    // render rows using maxCols
+    const htmlRows = rowsCells
+      .map((r) => {
+        if (r === "__HLINE__") return `<tr class="hline"><td colspan="${Math.max(1, maxCols)}" style="border-top:1px solid #e5e7eb;padding:0"></td></tr>`;
+        const rawCells = r as string[];
 
         // Pre-clean and macro-replace common text macros like \textbf, \emph
         const cleanAndReplace = (s: string) => {
           let t = s.trim();
-          // simple replacements for common text macros
-          t = t.replace(/\\textbf\{([^}]+)\}/g, '<strong>$1</strong>');
-          t = t.replace(/\\textit\{([^}]+)\}/g, '<em>$1</em>');
-          t = t.replace(/\\emph\{([^}]+)\}/g, '<em>$1</em>');
-          // replace simple \% and escaped braces
-          t = t.replace(/\\%/g, '%').replace(/\\\{/g, '{').replace(/\\\}/g, '}');
+          t = t.replace(/\\textbf\{([^}]+)\}/g, "<strong>$1</strong>");
+          t = t.replace(/\\textit\{([^}]+)\}/g, "<em>$1</em>");
+          t = t.replace(/\\emph\{([^}]+)\}/g, "<em>$1</em>");
+          t = t.replace(/\\%/g, "%").replace(/\\\{/g, "{").replace(/\\\}/g, "}");
           return t;
         };
 
-        // If latex.js is available, try to parse each cell so TeX (math/macros) is converted to HTML
-        const cells = rawCells.map((c: string) => {
-          const pre = cleanAndReplace(c);
+        // render each cell (try latex.js then fallback)
+        const rendered: string[] = [];
+        for (let ci = 0; ci < maxCols; ci++) {
+          const rawCell = (rawCells[ci] || "").trim();
+          if (!rawCell) {
+            rendered.push("");
+            continue;
+          }
+          const pre = cleanAndReplace(rawCell);
           if (latexGlobal) {
             try {
-              // @ts-ignore - use latex.js from window
+              // @ts-ignore
               const gen = new latexGlobal.HtmlGenerator({ hyphenate: false });
-              const wrapped = `\\documentclass{article}\n\\begin{document}\n${pre}\n\\end{document}`;
+              const wrapped = `\\documentclass{article}\n\\begin{document}\n${rawCell}\n\\end{document}`;
               // @ts-ignore
               const doc = latexGlobal.parse(wrapped, { generator: gen }).htmlDocument();
-              let inner = doc.documentElement.innerHTML || '';
-              // try to extract only the rendered body content
+              let inner = doc.documentElement.innerHTML || "";
               const bodyMatch = inner.match(/<div class="body">([\s\S]*?)<\/div>/i);
               const bodyTagMatch = inner.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
               let bodyHtml = bodyMatch ? bodyMatch[1] : bodyTagMatch ? bodyTagMatch[1] : inner;
-              // If latex.js escaped HTML like &lt;strong&gt; ... &lt;/strong&gt;, decode entities to restore tags
-              if (/&lt;[a-zA-Z]/.test(bodyHtml) && typeof document !== 'undefined') {
-                const dec = document.createElement('div');
+              if (/&lt;[a-zA-Z]/.test(bodyHtml) && typeof document !== "undefined") {
+                const dec = document.createElement("div");
                 dec.innerHTML = bodyHtml;
                 bodyHtml = dec.textContent || dec.innerHTML || bodyHtml;
-                // after decoding entities, if we got literal tags like <strong>, allow them
                 if (dec.textContent && /<strong>/.test(dec.textContent)) {
                   bodyHtml = dec.textContent;
                 }
               }
-              return bodyHtml;
+              rendered.push(bodyHtml);
+              continue;
             } catch (e) {
-              // fall back to our macro-replaced HTML (do not escape tags so <strong> renders)
-              return pre;
+              // fallback to macro-replaced HTML
+              rendered.push(pre);
+              continue;
             }
           }
-          return esc(pre);
-        });
-
-        while (cells.length < colCount) cells.push('');
-        // If this row appears to be a header (all cells contain <strong> or are empty), render <th>
-        const isHeader = cells.length > 0 && cells.every((c: string) => /<strong>|^\s*$/.test(c));
-        if (isHeader) {
-          return `<tr>${cells.map((c: string) => `<th>${c}</th>`).join('')}</tr>`;
+          rendered.push(esc(pre));
         }
-        return `<tr>${cells.map((c: string) => `<td>${c}</td>`).join('')}</tr>`;
+
+        // If this row appears to be a header (all cells contain <strong> or are empty), render <th>
+        const isHeader = rendered.length > 0 && rendered.every((c) => /<strong>|^\s*$/.test(c));
+        if (isHeader) return `<tr>${rendered.map((c) => `<th>${c}</th>`).join("")}</tr>`;
+        return `<tr>${rendered.map((c) => `<td>${c}</td>`).join("")}</tr>`;
       })
-      .join('');
+      .join("");
     return `<div class="latex-table"><table>${htmlRows}</table></div>`;
   };
 
