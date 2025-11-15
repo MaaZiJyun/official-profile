@@ -1,7 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
 
-export default function ViewerClient({ tex, filename }: { tex: string; filename?: string }) {
+export default function ViewerClient({
+  tex,
+  filename,
+}: {
+  tex: string;
+  filename?: string;
+}) {
   const renderTabularToHtml = (raw: string, colSpec: string) => {
     // split into rows by LaTeX row separator
     const rows = String(raw || "")
@@ -21,7 +27,10 @@ export default function ViewerClient({ tex, filename }: { tex: string; filename?
     });
 
     // determine max columns
-    let maxCols = rowsCells.reduce((m, r) => (r === "__HLINE__" ? m : Math.max(m, (r as string[]).length)), 0);
+    let maxCols = rowsCells.reduce(
+      (m, r) => (r === "__HLINE__" ? m : Math.max(m, (r as string[]).length)),
+      0
+    );
 
     // trim trailing empty columns (columns that are empty for all non-hline rows)
     const isEmptyAtCol = (col: number) => {
@@ -37,14 +46,21 @@ export default function ViewerClient({ tex, filename }: { tex: string; filename?
     }
 
     const esc = (s: string) =>
-      String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      String(s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
 
-    const latexGlobal = (typeof window !== "undefined" && ((window as any).latex || (window as any).latexjs)) || null;
+    const latexGlobal =
+      (typeof window !== "undefined" &&
+        ((window as any).latex || (window as any).latexjs)) ||
+      null;
 
     // render rows using maxCols
     const htmlRows = rowsCells
       .map((r) => {
-        if (r === "__HLINE__") return `<tr class="hline"><td colspan="${Math.max(1, maxCols)}" style="border-top:1px solid #e5e7eb;padding:0"></td></tr>`;
+        // if (r === "__HLINE__") return `<tr class="hline"><td colspan="${Math.max(1, maxCols)}" style="border-top:1px solid #e5e7eb;padding:0"></td></tr>`;
+        if (r === "__HLINE__") return null;
         const rawCells = r as string[];
 
         // Pre-clean and macro-replace common text macros like \textbf, \emph
@@ -53,7 +69,10 @@ export default function ViewerClient({ tex, filename }: { tex: string; filename?
           t = t.replace(/\\textbf\{([^}]+)\}/g, "<strong>$1</strong>");
           t = t.replace(/\\textit\{([^}]+)\}/g, "<em>$1</em>");
           t = t.replace(/\\emph\{([^}]+)\}/g, "<em>$1</em>");
-          t = t.replace(/\\%/g, "%").replace(/\\\{/g, "{").replace(/\\\}/g, "}");
+          t = t
+            .replace(/\\%/g, "%")
+            .replace(/\\\{/g, "{")
+            .replace(/\\\}/g, "}");
           return t;
         };
 
@@ -72,12 +91,25 @@ export default function ViewerClient({ tex, filename }: { tex: string; filename?
               const gen = new latexGlobal.HtmlGenerator({ hyphenate: false });
               const wrapped = `\\documentclass{article}\n\\begin{document}\n${rawCell}\n\\end{document}`;
               // @ts-ignore
-              const doc = latexGlobal.parse(wrapped, { generator: gen }).htmlDocument();
+              const doc = latexGlobal
+                .parse(wrapped, { generator: gen })
+                .htmlDocument();
               let inner = doc.documentElement.innerHTML || "";
-              const bodyMatch = inner.match(/<div class="body">([\s\S]*?)<\/div>/i);
-              const bodyTagMatch = inner.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
-              let bodyHtml = bodyMatch ? bodyMatch[1] : bodyTagMatch ? bodyTagMatch[1] : inner;
-              if (/&lt;[a-zA-Z]/.test(bodyHtml) && typeof document !== "undefined") {
+              const bodyMatch = inner.match(
+                /<div class="body">([\s\S]*?)<\/div>/i
+              );
+              const bodyTagMatch = inner.match(
+                /<body[^>]*>([\s\S]*?)<\/body>/i
+              );
+              let bodyHtml = bodyMatch
+                ? bodyMatch[1]
+                : bodyTagMatch
+                ? bodyTagMatch[1]
+                : inner;
+              if (
+                /&lt;[a-zA-Z]/.test(bodyHtml) &&
+                typeof document !== "undefined"
+              ) {
                 const dec = document.createElement("div");
                 dec.innerHTML = bodyHtml;
                 bodyHtml = dec.textContent || dec.innerHTML || bodyHtml;
@@ -97,8 +129,11 @@ export default function ViewerClient({ tex, filename }: { tex: string; filename?
         }
 
         // If this row appears to be a header (all cells contain <strong> or are empty), render <th>
-        const isHeader = rendered.length > 0 && rendered.every((c) => /<strong>|^\s*$/.test(c));
-        if (isHeader) return `<tr>${rendered.map((c) => `<th>${c}</th>`).join("")}</tr>`;
+        const isHeader =
+          rendered.length > 0 &&
+          rendered.every((c) => /<strong>|^\s*$/.test(c));
+        if (isHeader)
+          return `<tr>${rendered.map((c) => `<th>${c}</th>`).join("")}</tr>`;
         return `<tr>${rendered.map((c) => `<td>${c}</td>`).join("")}</tr>`;
       })
       .join("");
@@ -204,10 +239,13 @@ export default function ViewerClient({ tex, filename }: { tex: string; filename?
 
         // Extract caption
         let captionText = "";
-        inner = inner.replace(/\\caption\{([\s\S]*?)\}/, (_m: any, cap: string) => {
-          captionText = cap.trim();
-          return "";
-        });
+        inner = inner.replace(
+          /\\caption\{([\s\S]*?)\}/,
+          (_m: any, cap: string) => {
+            captionText = cap.trim();
+            return "";
+          }
+        );
 
         // Remove \label
         inner = inner.replace(/\\label\{.*?\}/g, "");
@@ -234,10 +272,13 @@ export default function ViewerClient({ tex, filename }: { tex: string; filename?
 
         // Extract caption
         let captionText = "";
-        inner = inner.replace(/\\caption\{([\s\S]*?)\}/, (_m: any, cap: string) => {
-          captionText = cap.trim();
-          return "";
-        });
+        inner = inner.replace(
+          /\\caption\{([\s\S]*?)\}/,
+          (_m: any, cap: string) => {
+            captionText = cap.trim();
+            return "";
+          }
+        );
 
         // Remove \label
         inner = inner.replace(/\\label\{.*?\}/g, "");
@@ -260,7 +301,11 @@ export default function ViewerClient({ tex, filename }: { tex: string; filename?
       (_full, colSpec, innerContent) => {
         // crude column count: count letters in colSpec (l, c, r, p, m, b, X, etc.)
         const letters = (colSpec || "").replace(/[^a-zA-Z]/g, "");
-        const colCount = Math.max(1, letters.length || (innerContent.split('\\\\')[0] || '').split('&').length);
+        const colCount = Math.max(
+          1,
+          letters.length ||
+            (innerContent.split("\\\\")[0] || "").split("&").length
+        );
 
         const rows = innerContent
           .trim()
@@ -270,28 +315,32 @@ export default function ViewerClient({ tex, filename }: { tex: string; filename?
 
         const esc = (s: string) =>
           String(s)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;');
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
 
         const htmlRows = rows
           .map((row: string) => {
             if (/^\\hline\s*$/.test(row)) {
               // represent hline as a separator row
-              return `<tr class="hline"><td colspan="${colCount}" style="border-top:1px solid #e5e7eb;padding:0"></td></tr>`;
+              return `<tr class="hline"><td colspan="${colCount}"></td></tr>`;
             }
-            const cells = row.split(/&/g).map((c: string) => esc(c.replace(/\\hline/g, '').trim()));
+            const cells = row
+              .split(/&/g)
+              .map((c: string) => esc(c.replace(/\\hline/g, "").trim()));
             // pad cells if fewer than colCount
-            while (cells.length < colCount) cells.push('');
-            return `<tr>${cells.map((c: string) => `<td>${c}</td>`).join('')}</tr>`;
+            while (cells.length < colCount) cells.push("");
+            return `<tr>${cells
+              .map((c: string) => `<td>${c}</td>`)
+              .join("")}</tr>`;
           })
-          .join('');
+          .join("");
 
         const tableHtml = `<div class="latex-table"><table>${htmlRows}</table></div>`;
 
         if (createToken) {
           // store raw inner content and column spec so we can render cell TeX later
-          return createToken('table', { raw: innerContent, colSpec });
+          return createToken("table", { raw: innerContent, colSpec });
         }
         return tableHtml;
       }
@@ -318,6 +367,10 @@ export default function ViewerClient({ tex, filename }: { tex: string; filename?
           "equation",
           "equation*",
           "cases",
+          // lists
+          "itemize",
+          "enumerate",
+          "description",
           // tables
           "table",
           "table*",
@@ -423,8 +476,10 @@ export default function ViewerClient({ tex, filename }: { tex: string; filename?
             .latex-rendered img { max-width:100%; height:auto; }
             .latex-rendered em { font-style: italic; }
             .latex-rendered .bf { font-weight: 600; }
-            .latex-rendered table { border-collapse: collapse; width: 100%; margin: 0.75rem 0; }
-            .latex-rendered th, .latex-rendered td { border: 1px solid #e5e7eb; padding: 0.4rem 0.6rem; }
+            .latex-rendered table { border-collapse: collapse; width: 100%; margin: 0.75rem 0; border: none;}
+            .latex-rendered th, .latex-rendered td { border: none; }
+            .latex-rendered li { font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; }  
+            .latex-rendered li > p { margin: 0; }
             .latex-rendered code { background: #f3f4f6; padding: 0.12rem 0.3rem; border-radius: 4px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Helvetica Neue', monospace; }
             .latex-rendered .katex-display  { font-size: 1.20rem; padding: 0.12rem 0.3rem; text-align: center; display: block; margin: 0.6rem 0; }
             .latex-rendered .katex-display > .katex { display: inline-block; }
@@ -450,8 +505,8 @@ export default function ViewerClient({ tex, filename }: { tex: string; filename?
           return t;
         };
 
-  // @ts-ignore
-  const normalized = normalizeTex(tex, createToken);
+        // @ts-ignore
+        const normalized = normalizeTex(tex, createToken);
 
         // @ts-ignore
         const generator = new latex.HtmlGenerator({ hyphenate: false });
@@ -559,7 +614,9 @@ export default function ViewerClient({ tex, filename }: { tex: string; filename?
                 const gen = new latex.HtmlGenerator({ hyphenate: false });
                 const fakeWrapped = wrapIfNeeded(fake);
                 // @ts-ignore
-                const doc2 = latex.parse(fakeWrapped, { generator: gen }).htmlDocument();
+                const doc2 = latex
+                  .parse(fakeWrapped, { generator: gen })
+                  .htmlDocument();
                 const innerHtml = doc2.documentElement.innerHTML;
                 // If latex.js didn't produce a table, fall back to simple renderer
                 if (!innerHtml || innerHtml.indexOf("<table") === -1) {
@@ -568,7 +625,10 @@ export default function ViewerClient({ tex, filename }: { tex: string; filename?
                 return innerHtml;
               } catch (e) {
                 // fallback to simple tabular->HTML renderer
-                return renderTabularToHtml(String(payload.raw || ""), String(payload.colSpec || ""));
+                return renderTabularToHtml(
+                  String(payload.raw || ""),
+                  String(payload.colSpec || "")
+                );
               }
             }
             return "";
@@ -617,7 +677,10 @@ export default function ViewerClient({ tex, filename }: { tex: string; filename?
         try {
           const qp = new URLSearchParams(window.location.search || "");
           if (qp.get("debug") === "latex") {
-            (window as any).__latex_debug = { normalized, tokenMap: Array.from(tokenMap.entries()) };
+            (window as any).__latex_debug = {
+              normalized,
+              tokenMap: Array.from(tokenMap.entries()),
+            };
           }
         } catch (e) {}
 
@@ -637,20 +700,41 @@ export default function ViewerClient({ tex, filename }: { tex: string; filename?
   if (!html) return <div>Rendering...</div>;
 
   // If debug mode was enabled, show normalized/text/tokenMap from window.__latex_debug
-  const qp = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
+  const qp =
+    typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search)
+      : null;
   const debugOn = qp?.get("debug") === "latex";
-  const dbg: any = typeof window !== "undefined" ? (window as any).__latex_debug : null;
+  const dbg: any =
+    typeof window !== "undefined" ? (window as any).__latex_debug : null;
 
   return (
     <div>
       {debugOn && dbg && (
         <details className="mb-4 p-3 bg-gray-50 border rounded">
-          <summary className="font-semibold">LaTeX debug (normalized & tokens)</summary>
-          <div style={{ maxHeight: 300, overflow: "auto", whiteSpace: "pre-wrap", fontFamily: "monospace" }}>
+          <summary className="font-semibold">
+            LaTeX debug (normalized & tokens)
+          </summary>
+          <div
+            style={{
+              maxHeight: 300,
+              overflow: "auto",
+              whiteSpace: "pre-wrap",
+              fontFamily: "monospace",
+            }}
+          >
             <h4>normalized:</h4>
             <pre>{String(dbg.normalized || "")}</pre>
             <h4>tokens (table payloads):</h4>
-            <pre>{JSON.stringify(dbg.tokenMap?.filter((t: any) => String(t[1].type) === "table") || [], null, 2)}</pre>
+            <pre>
+              {JSON.stringify(
+                dbg.tokenMap?.filter(
+                  (t: any) => String(t[1].type) === "table"
+                ) || [],
+                null,
+                2
+              )}
+            </pre>
           </div>
         </details>
       )}

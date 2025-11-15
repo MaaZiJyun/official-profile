@@ -1,7 +1,5 @@
 \documentclass{article}
 \usepackage{graphicx}
-% latex.js may not parse \graphicspath reliably; comment it out and reference images by full or relative path
-% \graphicspath{{/posts/Minimum_Constellation_Size_for_Polar_LEO_Global_Coverage/}}
 \title{Experiment on Single Orbit Tasking Duration Minimisation}
 \author{Zi Jyun Maa}
 \date{May 2025}
@@ -10,65 +8,131 @@
 \maketitle
 
 \section{Introduction}
-Our goal was to create a real-time satellite system, 
-one that could complete missions very quickly. 
-Initially, we assumed a single-orbit constellation could meet this requirement and did not consider multi-orbit constellations.
-Therefore, we conducted an experiment to determine whether a single orbit could achieve the desired tasking duration.
 
-The objective is to minimise the time interval $\Delta t$ from task initiation $t_0$ to data downlink $t_r$, 
-subject to constraints on orbital configuration, satellite resources, 
-and ground station distribution.
+This study explores whether a \textbf{single-orbit satellite constellation} can complete tasks fast enough for real-time applications. At first glance, a single orbit sounds simple and elegant—so we tested if it could actually work.
 
-\begin{equation}
-\min \, T_{\text{task}}
-\end{equation}
-where $T_{\text{task}} = t_r - t_0$ is the tasking duration, and $t_0$ is the task initiation time.
+Our goal is to minimise the tasking duration:
+\[
+T_{\text{task}} = t_r - t_0,
+\]
+the time from task creation to final data downlink.
 
-We simplified the problem by assuming a task only includes three phases:
+For simplicity, each task includes only three phases:
 
-(A) Tasking phase: from $t_0$ to $t_l$, when the satellite receives tasking commands from ground station.
-(B) Processing phase: from $t_l$ to $t_o$, when the satellite captures data over the target area.
-(C) Downlink phase: from $t_o$ to $t_r$, when the satellite transmits data to the ground station.
+(A) \textbf{Tasking}: receiving commands from the ground.  
+(B) \textbf{Observing}: capturing images of the target.  
+(C) \textbf{Downlink}: sending data back to Earth.
 
-Additionally, there are two constraints:
+Two basic conditions must also be satisfied:
 
-\textbf{Condition 1 (GS Access)}: The satellite passes with an elevation angle > 10°. 
-The minimum elevation angle required to establish a connection between the terminal and the satellite is considered the minimum elevation angle for visibility, 
-denoted as $\theta_v = 10^\circ$
+\textbf{Condition 1 (GS Access)}: the satellite must be visible above a $10^\circ$ elevation angle.
 
 \begin{figure}[ht]
 	\centering
-	% Use an absolute path from site root so browser-based renderers (latex.js) can fetch it:
 	\includegraphics[width=0.3\textwidth]{/posts/Experiment_on_Single_Orbit/001.png}
-	\caption{The minimum elevation angle for visibility}
-	\label{fig:the-minimum-elevation-angle}
+	\caption{Minimum elevation angle required for visibility.}
 \end{figure}
 
-\textbf{Condition 2 (RoI Observation)}: The centre of the satellite field of view (or field of view coverage) contains the RoI (coverage > 90\%).
+\textbf{Condition 2 (RoI Observation)}: the target must fall inside 90\% of the satellite's field of view.
 
 \section{Experiment Setup}
+
+We conducted a full-factorial experiment using four variables:
+
+\begin{itemize}
+    \item Number of satellites: 1, 6, 12, 24  
+    \item Number of ground stations: 1, 2, 4, 6  
+    \item Ground station latitude band: low / mid / high  
+    \item RoI latitude band: low / mid / high  
+\end{itemize}
+
+This results in $4 \times 4 \times 3 \times 3 = 144$ scenario combinations.
 
 \begin{table}[h!]
 \centering
 \begin{tabular}{c|c|p{8cm}}
 \hline
-\textbf{Factor} & \textbf{Experimental Value} & \textbf{Explanation} \\
+\textbf{Factor} & \textbf{Values} & \textbf{Explanation} \\
 \hline
-$N_{\text{sat}}$ & \{1, 6, 12, 24\} &
-Total number of satellites in a single circular polar orbit \\
-
-$N_{\text{gs}}$ & \{1, 2, 4, 6\} &
-Number of ground stations evenly distributed in longitude \\
-
-$\phi_{\text{GS}}$ & \([0^\circ, 30^\circ), [30^\circ, 60^\circ), [60^\circ, 90^\circ)\) &
-Latitude range where the ground stations are located (low / mid / high latitudes) \\
-
-$\phi_{\text{RoI}}$ & \([0^\circ, 30^\circ), [30^\circ, 60^\circ), [60^\circ, 90^\circ)\) &
-Latitude range where the Region of Interest (RoI) is located (low / mid / high latitudes) \\
+$N_{\text{sat}}$ & \{1, 6, 12, 24\} & Satellites in a single polar orbit \\
+$N_{\text{gs}}$ & \{1, 2, 4, 6\} & Ground stations evenly spaced in longitude \\
+$\phi_{\text{GS}}$ & \([0^\circ, 30^\circ), [30^\circ, 60^\circ), [60^\circ, 90^\circ)\) & GS latitude band \\
+$\phi_{\text{RoI}}$ & \([0^\circ, 30^\circ), [30^\circ, 60^\circ), [60^\circ, 90^\circ)\) & RoI latitude band \\
 \hline
 \end{tabular}
-\caption{Experimental factors and their corresponding values.}
+\caption{Experimental factors.}
 \end{table}
 
+\section{Experiment Implementation}
+
+To avoid bias, each of the 10 experiment batches randomly generates new GS and RoI coordinates (within the selected latitude band). Each batch then tests all 144 parameter combinations.
+
+Each simulation follows this workflow:
+
+\begin{itemize}
+    \item Generate orbits (500 km, 98° inclination) and evenly spaced satellites  
+    \item Estimate orbit period $T$, number of shots, and step size $d_t = T/n_{shot}$  
+    \item Simulate from first possible observation until successful downlink  
+    \item Record the total task duration and parameters  
+\end{itemize}
+
+\section{Experiment Results}
+
+A total of 1,440 valid simulation rows were collected.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.9\textwidth]{/posts/Experiment_on_Single_Orbit/002.png}
+	\caption{Randomly generated RoI distribution.}
+\end{figure}
+
+The satellites operate at 500 km altitude, 90° inclination, with a 30° FoV.  
+The orbit period is 5668 s (1.57 h), and each satellite takes 180 shots per cycle.  
+The maximum simulation duration is 3.149 hours with a 31.49 s step size.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{l|c|c|c|c|c}
+\hline
+Stage & Base & Successes & Success Rate & Failures & Failure Rate \\
+\hline
+Tasking    & 1440 & 1113 & 77.3\% & 327 & 22.7\% \\
+Observing  & 1113 & 586  & 52.7\% & 527 & 47.3\% \\
+Targeting  & 586  & 562  & 95.9\% & 24  & 4.1\%  \\
+\hline
+Total      & 1440 & 562  & 39\%   & 878 & 61\%   \\
+\hline
+\end{tabular}
+\caption{Performance summary.}
+\end{table}
+
+The main source of failure occurs in the observing stage—satellites often cannot view the RoI in time.  
+This is largely due to orbital inclination:
+
+\begin{itemize}
+    \item Polar satellites sweep north–south and rely on Earth's rotation to cover longitude.  
+    \item The Earth takes 24 hours to rotate once, so full coverage also takes 24 hours.  
+    \item Our mission requires a response within only two orbital cycles—far too short for polar coverage.  
+\end{itemize}
+
+Thus, many failures are not “errors” but \textbf{physical limitations} of polar orbits.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.6\textwidth]{/posts/Experiment_on_Single_Orbit/003.png}
+	\caption{Task period distribution.}
+\end{figure}
+
+The task duration histogram shows two main clusters:  
+a short group (0–1000 s), a larger group (6000–10,000 s), and a long tail up to 20,000 s.
+
+\section{Conclusion}
+
+\begin{itemize}
+    \item High-latitude GS and RoI placements significantly shorten tasking duration.  
+    \item Adding more satellites or GS helps, but latitude effects are even stronger.  
+    \item A single polar orbit cannot guarantee real-time response.  
+    \item A practical solution is to combine polar and low-inclination orbits.  
+\end{itemize}
 
 \end{document}
