@@ -29,7 +29,7 @@ export default function CopyEmailButton({
       aria-label={`Copy email ${email}`}
       className="mt-1 text-zinc-600 bg-transparent border-0 p-0 cursor-pointer"
     >
-      <span className="select-none">{copied ? "Email has been copied ~" : display ?? email}</span>
+      <span className={copied ? "text-green-600" : ""}>{copied ? "Email copied" : display ?? email}</span>
     </button>
   );
 }
