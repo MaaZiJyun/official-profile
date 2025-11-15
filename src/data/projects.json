@@ -1,0 +1,102 @@
+[
+  {
+    "title": "S.C.O.P.E.",
+    "href": "",
+    "supervisor": "Prof. Yu LIU",
+    "date": "03/2025 – 08/2025",
+    "img": "/scope/001.png",
+    "intro": "A simulation on constellation observation performance evaluator.",
+    "sections": [
+      {
+        "image": "/scope/001.png",
+        "subtitle": "Introduction",
+        "description": "The simulator, S.C.O.P.E. (Satellite-Ground Collaborative Observation Performance Evaluator), provides a lightweight yet powerful environment for visualising and evaluating LEO satellite operation scenarios."
+      },
+      {
+        "image": "/scope/002.png",
+        "subtitle": "Objective of the Simulator",
+        "description": "The primary objective is to build an experimental platform capable of generating realistic satellite-ground interaction data, executing task scheduling and offloading logic, and evaluating the performance of different optimisation policies."
+      },
+      {
+        "image": "/scope/003.png",
+        "subtitle": "System Design & Architecture",
+        "description": "The simulator integrates modular components for satellite dynamics, visibility analysis, task generation, communication modelling, orbital energy consumption, and RL-based decision-making."
+      }
+    ]
+  },
+  {
+    "title": "Smart Cradle",
+    "href": "",
+    "supervisor": "Prof. Ng Keng Yap",
+    "date": "10/2021 – 04/2022",
+    "img": "/smart_cradle/002.png",
+    "intro": "Bachelor IoT project on baby-monitoring hardware and application development.",
+    "sections": [
+      {
+        "image": "/smart_cradle/001.png",
+        "subtitle": "Introduction",
+        "description": "The Smart Cradle System Project is a development of a series of software and hardware sharing and interacting information with each other to provide a solution of assisting parents to monitor and take care of their babies."
+      },
+      {
+        "image": "/smart_cradle/002.png",
+        "subtitle": "Project Overview",
+        "description": "As a final-year project, it combined hardware and software development, resulting in a Smart Cradle system based on Raspberry Pi, a mobile application for users, and a web application for managers."
+      },
+      {
+        "image": "/smart_cradle/003.png",
+        "subtitle": "Hardware Component",
+        "description": "The hardware part of Smart Cradle System is the smart cradle device. It detects infant's body data such as heart rate, which are collected by sensors."
+      }
+    ]
+  },
+  {
+    "title": "Momcare",
+    "href": "https://momcare-landingpage.vercel.app/",
+    "supervisor": "Prof. Ng Keng Yap",
+    "date": "10/2021 – 04/2022",
+    "img": "/momcare/001.png",
+    "intro": "Bachelor IoT project on baby-monitoring hardware and application development.",
+    "sections": [
+      {
+        "image": "/momcare/001.png",
+        "subtitle": "Introduction",
+        "description": "A smart assistant software for personalized health management and support for pregnant women."
+      },
+      {
+        "image": "/momcare/001.png",
+        "subtitle": "Objective of App",
+        "description": "To develop a smart assistant software aimed at providing personalized health management and support for pregnant women, thereby improving their health during pregnancy. This project is a collaboration between the UPM Department of Software Engineering and Columbia Asia Hospital in Malaysia."
+      },
+      {
+        "image": "/momcare/002.png",
+        "subtitle": "Momcare App Interface",
+        "description": "The project began with collaborative research with doctors at Columbia Asia Hospital to define the software requirements and user needs; the interface was prototyped using Figma to ensure a user-friendly experience. The mobile application was implemented using Flutter and Dart, while back-end services (data storage, processing and user management) were built with Laravel and PHP."
+      }
+    ]
+  },
+  {
+    "title": "EOS Credit",
+    "href": "https://play.google.com/store/apps/details?id=com.eos_credit.eos_credit&hl=en",
+    "supervisor": "Mr. Benjamin Lim",
+    "date": "03/2023 – 03/2024",
+    "img": "/eos/001.png",
+    "intro": "Mobile loan application as a intern. project for EOS Systems Sdn. Bhd.",
+    "sections": [
+      {
+        "image": "/eos/001.png",
+        "subtitle": "Introduction to EOS Credit App",
+        "description": "EOS Credit is a mobile application designed to provide convenient and secure lending services to individuals seeking financial assistance. "
+      },
+      {
+        "image": "/eos/002.png",
+        "subtitle": "Objective of App",
+        "description": "Objective: To develop an innovative financial assistance app that offers secure and flexible loan solutions for individuals in need of quick monetary support. This project is a collaboration between the UPM Department of Software Engineering and EOS Systems Sdn. Bhd."
+      },
+      {
+        "image": "/eos/003.png",
+        "subtitle": "Development and Release",
+        "description": "The EOS Credit app was developed using the Flutter framework to meet the specific requirements and design criteria provided by EOS Systems Sdn. Bhd. The project was completed during an internship and successfully released in the Malaysian region on the Google Play Store. A demonstration commercial video was also produced to promote the app."
+      }
+    ]
+  }
+]

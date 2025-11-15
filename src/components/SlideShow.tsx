@@ -1,0 +1,52 @@
+"use client";
+
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+
+type Section = {
+  image: string;
+  subtitle?: string;
+  description?: string;
+};
+
+export default function SlideShow({ sections }: { sections: Section[] }) {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(() => setIndex((i) => (i + 1) % sections.length), 8000);
+    return () => clearInterval(t);
+  }, [sections.length]);
+
+  if (!sections || sections.length === 0) return null;
+
+  const prev = () => setIndex((i) => (i - 1 + sections.length) % sections.length);
+  const next = () => setIndex((i) => (i + 1) % sections.length);
+
+  return (
+    <div className="relative w-full">
+      <div className="overflow-hidden rounded-lg">
+        <div className="relative h-[320px] md:h-[420px] bg-zinc-100">
+          <Image src={sections[index].image} alt={sections[index].subtitle ?? ''} fill className="object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+          <div className="absolute left-4 bottom-4 right-4 text-white">
+            <div className="text-xl font-semibold">{sections[index].subtitle}</div>
+            <div className="mt-2 max-w-2xl">{sections[index].description}</div>
+          </div>
+        </div>
+      </div>
+
+      <button aria-label="Previous" onClick={prev} className="absolute left-2 top-1/2 -translate-y-1/2 text-white hover:cursor-pointer p-2">
+        ◀
+      </button>
+      <button aria-label="Next" onClick={next} className="absolute right-2 top-1/2 -translate-y-1/2 text-white hover:cursor-pointer p-2">
+        ▶
+      </button>
+
+      <div className="mt-3 flex justify-center gap-2">
+        {sections.map((_, i) => (
+          <button key={i} onClick={() => setIndex(i)} aria-label={`Go to slide ${i + 1}`} className={`h-2 w-8 rounded-full ${i === index ? 'bg-zinc-800' : 'bg-zinc-300'}`} />
+        ))}
+      </div>
+    </div>
+  );
+}
