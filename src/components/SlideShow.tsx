@@ -24,7 +24,7 @@ export default function SlideShow({ sections, link }: { sections: Section[], lin
 
   return (
     <div className="relative w-full">
-      <div className="overflow-hidden rounded-lg">
+      <div className="overflow-hidden rounded-xl">
         <div className="relative h-[540px] bg-zinc-100">
           <Image src={sections[index].image} alt={sections[index].subtitle ?? ''} fill className="object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
