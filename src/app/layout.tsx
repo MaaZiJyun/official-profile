@@ -37,7 +37,7 @@ export default function RootLayout({
         <main className="mx-auto max-w-4xl px-6 py-10">{children}</main>
 
         <footer className="mx-auto max-w-4xl px-6 py-8 text-sm text-zinc-500">
-          © {new Date().getFullYear()} MyProfile. All rights reserved.
+          © {new Date().getFullYear()} Maa ZiJyun's Profile.
         </footer>
       </body>
     </html>
