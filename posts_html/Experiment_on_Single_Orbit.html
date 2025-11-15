@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Zi Jyun Maa" />
+  <title>Experiment on Single Orbit Tasking Duration Minimisation</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Experiment on Single Orbit Tasking Duration
+Minimisation</h1>
+<p class="author">Zi Jyun Maa</p>
+<p class="date">May 2025</p>
+</header>
+<h1 id="introduction">Introduction</h1>
+<p>This study explores whether a <strong>single-orbit satellite
+constellation</strong> can complete tasks fast enough for real-time
+applications. At first glance, a single orbit sounds simple and
+elegant—so we tested if it could actually work.</p>
+<p>Our goal is to minimise the tasking duration: <span
+class="math display"><em>T</em><sub>task</sub> = <em>t</em><sub><em>r</em></sub> − <em>t</em><sub>0</sub>,</span>
+the time from task creation to final data downlink.</p>
+<p>For simplicity, each task includes only three phases:</p>
+<p>(A) <strong>Tasking</strong>: receiving commands from the ground. (B)
+<strong>Observing</strong>: capturing images of the target. (C)
+<strong>Downlink</strong>: sending data back to Earth.</p>
+<p>Two basic conditions must also be satisfied:</p>
+<p><strong>Condition 1 (GS Access)</strong>: the satellite must be
+visible above a <span class="math inline">10<sup>∘</sup></span>
+elevation angle.</p>
+<figure>
+<img src="/posts/Experiment_on_Single_Orbit/001.png"
+style="width:30.0%" />
+<figcaption>Minimum elevation angle required for
+visibility.</figcaption>
+</figure>
+<p><strong>Condition 2 (RoI Observation)</strong>: the target must fall
+inside 90% of the satellite’s field of view.</p>
+<h1 id="experiment-setup">Experiment Setup</h1>
+<p>We conducted a full-factorial experiment using four variables:</p>
+<ul>
+<li><p>Number of satellites: 1, 6, 12, 24</p></li>
+<li><p>Number of ground stations: 1, 2, 4, 6</p></li>
+<li><p>Ground station latitude band: low / mid / high</p></li>
+<li><p>RoI latitude band: low / mid / high</p></li>
+</ul>
+<p>This results in <span class="math inline">4 × 4 × 3 × 3 = 144</span>
+scenario combinations.</p>
+<table>
+<caption>Experimental factors.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><strong>Factor</strong></th>
+<th style="text-align: center;"><strong>Values</strong></th>
+<th style="text-align: left;"><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span
+class="math inline"><em>N</em><sub>sat</sub></span></td>
+<td style="text-align: center;">{1, 6, 12, 24}</td>
+<td style="text-align: left;">Satellites in a single polar orbit</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span
+class="math inline"><em>N</em><sub>gs</sub></span></td>
+<td style="text-align: center;">{1, 2, 4, 6}</td>
+<td style="text-align: left;">Ground stations evenly spaced in
+longitude</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span
+class="math inline"><em>ϕ</em><sub>GS</sub></span></td>
+<td style="text-align: center;"><span
+class="math inline">[0<sup>∘</sup>, 30<sup>∘</sup>), [30<sup>∘</sup>, 60<sup>∘</sup>), [60<sup>∘</sup>, 90<sup>∘</sup>)</span></td>
+<td style="text-align: left;">GS latitude band</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span
+class="math inline"><em>ϕ</em><sub>RoI</sub></span></td>
+<td style="text-align: center;"><span
+class="math inline">[0<sup>∘</sup>, 30<sup>∘</sup>), [30<sup>∘</sup>, 60<sup>∘</sup>), [60<sup>∘</sup>, 90<sup>∘</sup>)</span></td>
+<td style="text-align: left;">RoI latitude band</td>
+</tr>
+</tbody>
+</table>
+<h1 id="experiment-implementation">Experiment Implementation</h1>
+<p>To avoid bias, each of the 10 experiment batches randomly generates
+new GS and RoI coordinates (within the selected latitude band). Each
+batch then tests all 144 parameter combinations.</p>
+<p>Each simulation follows this workflow:</p>
+<ul>
+<li><p>Generate orbits (500 km, 98° inclination) and evenly spaced
+satellites</p></li>
+<li><p>Estimate orbit period <span
+class="math inline"><em>T</em></span>, number of shots, and step size
+<span
+class="math inline"><em>d</em><sub><em>t</em></sub> = <em>T</em>/<em>n</em><sub><em>s</em><em>h</em><em>o</em><em>t</em></sub></span></p></li>
+<li><p>Simulate from first possible observation until successful
+downlink</p></li>
+<li><p>Record the total task duration and parameters</p></li>
+</ul>
+<h1 id="experiment-results">Experiment Results</h1>
+<p>A total of 1,440 valid simulation rows were collected.</p>
+<figure>
+<img src="/posts/Experiment_on_Single_Orbit/002.png"
+style="width:90.0%" />
+<figcaption>Randomly generated RoI distribution.</figcaption>
+</figure>
+<p>The satellites operate at 500 km altitude, 90° inclination, with a
+30° FoV. The orbit period is 5668 s (1.57 h), and each satellite takes
+180 shots per cycle. The maximum simulation duration is 3.149 hours with
+a 31.49 s step size.</p>
+<table>
+<caption>Performance summary.</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Stage</th>
+<th style="text-align: center;">Base</th>
+<th style="text-align: center;">Successes</th>
+<th style="text-align: center;">Success Rate</th>
+<th style="text-align: center;">Failures</th>
+<th style="text-align: center;">Failure Rate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Tasking</td>
+<td style="text-align: center;">1440</td>
+<td style="text-align: center;">1113</td>
+<td style="text-align: center;">77.3%</td>
+<td style="text-align: center;">327</td>
+<td style="text-align: center;">22.7%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Observing</td>
+<td style="text-align: center;">1113</td>
+<td style="text-align: center;">586</td>
+<td style="text-align: center;">52.7%</td>
+<td style="text-align: center;">527</td>
+<td style="text-align: center;">47.3%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Targeting</td>
+<td style="text-align: center;">586</td>
+<td style="text-align: center;">562</td>
+<td style="text-align: center;">95.9%</td>
+<td style="text-align: center;">24</td>
+<td style="text-align: center;">4.1%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Total</td>
+<td style="text-align: center;">1440</td>
+<td style="text-align: center;">562</td>
+<td style="text-align: center;">39%</td>
+<td style="text-align: center;">878</td>
+<td style="text-align: center;">61%</td>
+</tr>
+</tbody>
+</table>
+<p>The main source of failure occurs in the observing stage—satellites
+often cannot view the RoI in time. This is largely due to orbital
+inclination:</p>
+<ul>
+<li><p>Polar satellites sweep north–south and rely on Earth’s rotation
+to cover longitude.</p></li>
+<li><p>The Earth takes 24 hours to rotate once, so full coverage also
+takes 24 hours.</p></li>
+<li><p>Our mission requires a response within only two orbital
+cycles—far too short for polar coverage.</p></li>
+</ul>
+<p>Thus, many failures are not “errors” but <strong>physical
+limitations</strong> of polar orbits.</p>
+<figure>
+<img src="/posts/Experiment_on_Single_Orbit/003.png"
+style="width:60.0%" />
+<figcaption>Task period distribution.</figcaption>
+</figure>
+<p>The task duration histogram shows two main clusters: a short group
+(0–1000 s), a larger group (6000–10,000 s), and a long tail up to 20,000
+s.</p>
+<h1 id="conclusion">Conclusion</h1>
+<ul>
+<li><p>High-latitude GS and RoI placements significantly shorten tasking
+duration.</p></li>
+<li><p>Adding more satellites or GS helps, but latitude effects are even
+stronger.</p></li>
+<li><p>A single polar orbit cannot guarantee real-time
+response.</p></li>
+<li><p>A practical solution is to combine polar and low-inclination
+orbits.</p></li>
+</ul>
+</body>
+</html>

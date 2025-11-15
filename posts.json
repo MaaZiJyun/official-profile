@@ -1,5 +1,12 @@
 [
   {
+    "filename": "Experiment_on_Single_Orbit.tex",
+    "name": "Experiment_on_Single_Orbit",
+    "title": "Experiment on Single Orbit Tasking Duration Minimisation",
+    "excerpt": "This study explores whether a <strong>single-orbit satellite constellation</strong> can complete tasks fast enough for real-time applications. At first glance, a single orbit sounds simple and elegant—so we tested if it could actually work.",
+    "htmlPath": "/posts_html/Experiment_on_Single_Orbit.html"
+  },
+  {
     "filename": "Minimum_Constellation_Size_for_Polar_LEO_Global_Coverage.tex",
     "name": "Minimum_Constellation_Size_for_Polar_LEO_Global_Coverage",
     "title": "How many satellites and how much time are needed for full global coverage?",
