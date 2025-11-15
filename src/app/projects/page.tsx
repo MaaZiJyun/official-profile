@@ -16,7 +16,10 @@ export default function ProjectsPage() {
               </div>
               <div className="text-sm text-zinc-500">{p.date}</div>
             </div>
-            <div className="text-zinc-700">{p.intro}</div>
+            <div className="text-sm text-zinc-700">{p.intro}</div>
+            <div className="mt-2">
+              <p className="text-sm text-red-600 underline">More Details</p>
+            </div>
           </div>
         </Link>
       ))}

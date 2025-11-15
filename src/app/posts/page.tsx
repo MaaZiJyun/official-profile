@@ -88,7 +88,7 @@ export default async function PostsPage() {
                   </p>
                   <p className="mt-1 text-sm text-zinc-600">{p.excerpt}...</p>
                   <div className="mt-2">
-                    <p className="text-sm text-red-600 underline">Preview</p>
+                    <p className="text-sm text-red-600 underline">More Details</p>
                   </div>
                 </article>
               </a>
