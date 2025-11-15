@@ -44,20 +44,7 @@ export default async function ProjectPage({ params }: Props) {
         </div>
 
         <div className="mt-6">
-          <SlideShow sections={project.sections ?? []} />
-
-          <div className="mt-6 text-justify">
-            <div className="mt-4">
-              <a
-                href={project.href}
-                target="_blank"
-                rel="noreferrer"
-                className="text-red-600 hover:underline"
-              >
-                Visit the project website for more details
-              </a>
-            </div>
-          </div>
+          <SlideShow sections={project.sections ?? []} link={project.href} />
         </div>
       </div>
     </div>

@@ -9,7 +9,7 @@ type Section = {
   description?: string;
 };
 
-export default function SlideShow({ sections }: { sections: Section[] }) {
+export default function SlideShow({ sections, link }: { sections: Section[], link: string }) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -25,9 +25,19 @@ export default function SlideShow({ sections }: { sections: Section[] }) {
   return (
     <div className="relative w-full">
       <div className="overflow-hidden rounded-lg">
-        <div className="relative h-[320px] md:h-[420px] bg-zinc-100">
+        <div className="relative h-[540px] bg-zinc-100">
           <Image src={sections[index].image} alt={sections[index].subtitle ?? ''} fill className="object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+          {link && (
+            <a
+              href={link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="absolute right-5 top-4 z-20 inline-flex items-center gap-2 rounded-full bg-red-600/80 px-3 py-1 text-sm text-white hover:bg-red-600/50"
+            >
+              Project Website
+            </a>
+          )}
           <div className="absolute left-4 bottom-4 right-4 text-white">
             <div className="text-xl font-semibold">{sections[index].subtitle}</div>
             <div className="mt-2 max-w-2xl">{sections[index].description}</div>
