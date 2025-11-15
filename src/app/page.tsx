@@ -32,14 +32,17 @@ export default function Home() {
             Hong Kong Polytechnic University. He received his Bachelor of
             Science in Software Engineering from Universiti Putra Malaysia in
             2024. His native language is Mandarin, and he is fluent in English
-            with an IELTS score of 7. He has worked on projects across multiple
-            domains, including software engineering, communication networks,
-            reinforcement learning, blockchain systems, and the Internet of
-            Things (IoT). His academic and research interests include software
-            engineering, networked systems, machine learning, reinforcement
-            learning, IoT, mobile and edge computing, and embedded systems. He
-            is particularly interested in applying these technologies to
-            real-world problems in science, education, and healthcare.
+            with an IELTS score of 7.
+          </p>
+          <p>
+            He has worked on projects across multiple domains, including
+            software engineering, communication networks, reinforcement
+            learning, blockchain systems, and the Internet of Things (IoT). His
+            academic and research interests include software engineering,
+            networked systems, machine learning, reinforcement learning, IoT,
+            mobile and edge computing, and embedded systems. He is particularly
+            interested in applying these technologies to real-world problems in
+            science, education, and healthcare.
           </p>
         </div>
       </div>
