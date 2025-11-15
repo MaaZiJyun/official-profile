@@ -1,0 +1,74 @@
+\documentclass{article}
+\usepackage{graphicx}
+% latex.js may not parse \graphicspath reliably; comment it out and reference images by full or relative path
+% \graphicspath{{/posts/Minimum_Constellation_Size_for_Polar_LEO_Global_Coverage/}}
+\title{Experiment on Single Orbit Tasking Duration Minimisation}
+\author{Zi Jyun Maa}
+\date{May 2025}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+Our goal was to create a real-time satellite system, 
+one that could complete missions very quickly. 
+Initially, we assumed a single-orbit constellation could meet this requirement and did not consider multi-orbit constellations.
+Therefore, we conducted an experiment to determine whether a single orbit could achieve the desired tasking duration.
+
+The objective is to minimise the time interval $\Delta t$ from task initiation $t_0$ to data downlink $t_r$, 
+subject to constraints on orbital configuration, satellite resources, 
+and ground station distribution.
+
+\begin{equation}
+\min \, T_{\text{task}}
+\end{equation}
+where $T_{\text{task}} = t_r - t_0$ is the tasking duration, and $t_0$ is the task initiation time.
+
+We simplified the problem by assuming a task only includes three phases:
+
+(A) Tasking phase: from $t_0$ to $t_l$, when the satellite receives tasking commands from ground station.
+(B) Processing phase: from $t_l$ to $t_o$, when the satellite captures data over the target area.
+(C) Downlink phase: from $t_o$ to $t_r$, when the satellite transmits data to the ground station.
+
+Additionally, there are two constraints:
+
+\textbf{Condition 1 (GS Access)}: The satellite passes with an elevation angle > 10°. 
+The minimum elevation angle required to establish a connection between the terminal and the satellite is considered the minimum elevation angle for visibility, 
+denoted as $\theta_v = 10^\circ$
+
+\begin{figure}[ht]
+	\centering
+	% Use an absolute path from site root so browser-based renderers (latex.js) can fetch it:
+	\includegraphics[width=0.3\textwidth]{/posts/Experiment_on_Single_Orbit/001.png}
+	\caption{The minimum elevation angle for visibility}
+	\label{fig:the-minimum-elevation-angle}
+\end{figure}
+
+\textbf{Condition 2 (RoI Observation)}: The centre of the satellite field of view (or field of view coverage) contains the RoI (coverage > 90\%).
+
+\section{Experiment Setup}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{c|c|p{8cm}}
+\hline
+\textbf{Factor} & \textbf{Experimental Value} & \textbf{Explanation} \\
+\hline
+$N_{\text{sat}}$ & \{1, 6, 12, 24\} &
+Total number of satellites in a single circular polar orbit \\
+
+$N_{\text{gs}}$ & \{1, 2, 4, 6\} &
+Number of ground stations evenly distributed in longitude \\
+
+$\phi_{\text{GS}}$ & \([0^\circ, 30^\circ), [30^\circ, 60^\circ), [60^\circ, 90^\circ)\) &
+Latitude range where the ground stations are located (low / mid / high latitudes) \\
+
+$\phi_{\text{RoI}}$ & \([0^\circ, 30^\circ), [30^\circ, 60^\circ), [60^\circ, 90^\circ)\) &
+Latitude range where the Region of Interest (RoI) is located (low / mid / high latitudes) \\
+\hline
+\end{tabular}
+\caption{Experimental factors and their corresponding values.}
+\end{table}
+
+
+\end{document}

@@ -9,6 +9,86 @@ export default function ViewerClient({
   tex: string;
   filename?: string;
 }) {
+  // Fallback: simple tabular -> HTML renderer for cases where latex.js fails
+  const renderTabularToHtml = (raw: string, colSpec?: string) => {
+    const letters = (colSpec || "").replace(/[^a-zA-Z]/g, "");
+    const colCount = Math.max(1, letters.length || (raw.split('\\\\')[0] || '').split('&').length);
+    const rows = raw
+      .trim()
+      .split(/\\\\\s*\n?/)
+      .map((r: string) => r.trim())
+      .filter((r: string) => r.length > 0);
+    const esc = (s: string) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const latexGlobal = typeof window !== 'undefined' ? (window as any).latex || (window as any).latexjs : null;
+
+    const htmlRows = rows
+      .map((row: string) => {
+        if (/^\\hline\s*$/.test(row)) {
+          return `<tr class="hline"><td colspan="${colCount}" style="border-top:1px solid #e5e7eb;padding:0"></td></tr>`;
+        }
+        const rawCells = row
+          .split(/&/g)
+          .map((c: string) => c.replace(/\\hline/g, '').trim())
+          .map((c: string) => c.replace(/^}+/, ''));
+
+        // Pre-clean and macro-replace common text macros like \textbf, \emph
+        const cleanAndReplace = (s: string) => {
+          let t = s.trim();
+          // simple replacements for common text macros
+          t = t.replace(/\\textbf\{([^}]+)\}/g, '<strong>$1</strong>');
+          t = t.replace(/\\textit\{([^}]+)\}/g, '<em>$1</em>');
+          t = t.replace(/\\emph\{([^}]+)\}/g, '<em>$1</em>');
+          // replace simple \% and escaped braces
+          t = t.replace(/\\%/g, '%').replace(/\\\{/g, '{').replace(/\\\}/g, '}');
+          return t;
+        };
+
+        // If latex.js is available, try to parse each cell so TeX (math/macros) is converted to HTML
+        const cells = rawCells.map((c: string) => {
+          const pre = cleanAndReplace(c);
+          if (latexGlobal) {
+            try {
+              // @ts-ignore - use latex.js from window
+              const gen = new latexGlobal.HtmlGenerator({ hyphenate: false });
+              const wrapped = `\\documentclass{article}\n\\begin{document}\n${pre}\n\\end{document}`;
+              // @ts-ignore
+              const doc = latexGlobal.parse(wrapped, { generator: gen }).htmlDocument();
+              let inner = doc.documentElement.innerHTML || '';
+              // try to extract only the rendered body content
+              const bodyMatch = inner.match(/<div class="body">([\s\S]*?)<\/div>/i);
+              const bodyTagMatch = inner.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+              let bodyHtml = bodyMatch ? bodyMatch[1] : bodyTagMatch ? bodyTagMatch[1] : inner;
+              // If latex.js escaped HTML like &lt;strong&gt; ... &lt;/strong&gt;, decode entities to restore tags
+              if (/&lt;[a-zA-Z]/.test(bodyHtml) && typeof document !== 'undefined') {
+                const dec = document.createElement('div');
+                dec.innerHTML = bodyHtml;
+                bodyHtml = dec.textContent || dec.innerHTML || bodyHtml;
+                // after decoding entities, if we got literal tags like <strong>, allow them
+                if (dec.textContent && /<strong>/.test(dec.textContent)) {
+                  bodyHtml = dec.textContent;
+                }
+              }
+              return bodyHtml;
+            } catch (e) {
+              // fall back to our macro-replaced HTML (do not escape tags so <strong> renders)
+              return pre;
+            }
+          }
+          return esc(pre);
+        });
+
+        while (cells.length < colCount) cells.push('');
+        // If this row appears to be a header (all cells contain <strong> or are empty), render <th>
+        const isHeader = cells.length > 0 && cells.every((c: string) => /<strong>|^\s*$/.test(c));
+        if (isHeader) {
+          return `<tr>${cells.map((c: string) => `<th>${c}</th>`).join('')}</tr>`;
+        }
+        return `<tr>${cells.map((c: string) => `<td>${c}</td>`).join('')}</tr>`;
+      })
+      .join('');
+    return `<div class="latex-table"><table>${htmlRows}</table></div>`;
+  };
+
   const [html, setHtml] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -39,7 +119,7 @@ export default function ViewerClient({
     // Remove common document-level commands (but preserve title/author/date values captured above)
     const docLevelCommands = [
       /\\documentclass\{[\s\S]*?}/g,
-      /\\usepackage\{[\s\S]*?}/g,
+      // keep usepackage lines so latex.js can see package-defined environments/macros
       /\\begin\{document\}/g,
       /\\end\{document\}/g,
       /\\tableofcontents/g,
@@ -99,7 +179,7 @@ export default function ViewerClient({
     );
 
     // ----------------------------------------------------
-    // 2. Replace figure (support [ht])
+    // 2. Replace figure floats (support [ht])
     // ----------------------------------------------------
     out = out.replace(
       /\\begin\{figure\*?\}(?:\[[^\]]*])?([\s\S]*?)\\end\{figure\*?\}/g,
@@ -108,13 +188,10 @@ export default function ViewerClient({
 
         // Extract caption
         let captionText = "";
-        inner = inner.replace(
-          /\\caption\{([\s\S]*?)\}/,
-          (_m: any, cap: string) => {
-            captionText = cap.trim();
-            return "";
-          }
-        );
+        inner = inner.replace(/\\caption\{([\s\S]*?)\}/, (_m: any, cap: string) => {
+          captionText = cap.trim();
+          return "";
+        });
 
         // Remove \label
         inner = inner.replace(/\\label\{.*?\}/g, "");
@@ -132,6 +209,79 @@ export default function ViewerClient({
     );
 
     // ----------------------------------------------------
+    // 2.5 Replace table floats (extract inner tabular and caption)
+    // ----------------------------------------------------
+    out = out.replace(
+      /\\begin\{table\*?\}(?:\[[^\]]*])?([\s\S]*?)\\end\{table\*?\}/g,
+      (_full, content) => {
+        let inner = content;
+
+        // Extract caption
+        let captionText = "";
+        inner = inner.replace(/\\caption\{([\s\S]*?)\}/, (_m: any, cap: string) => {
+          captionText = cap.trim();
+          return "";
+        });
+
+        // Remove \label
+        inner = inner.replace(/\\label\{.*?\}/g, "");
+
+        if (createToken) {
+          const capToken = captionText ? createToken("cap", captionText) : "";
+          return `${inner.trim()}\n\n${capToken}`;
+        }
+
+        const encCap = encodeURIComponent(captionText || "");
+        return `__FIG__${inner.trim()}__CAP__${encCap}__END__`;
+      }
+    );
+
+    // ----------------------------------------------------
+    // 2.75 Convert tabular environments to HTML tokens so latex.js won't error
+    // ----------------------------------------------------
+    out = out.replace(
+      /\\begin\{tabular(?:\*?)\}\{([^}]*)\}([\s\S]*?)\\end\{tabular(?:\*?)\}/g,
+      (_full, colSpec, innerContent) => {
+        // crude column count: count letters in colSpec (l, c, r, p, m, b, X, etc.)
+        const letters = (colSpec || "").replace(/[^a-zA-Z]/g, "");
+        const colCount = Math.max(1, letters.length || (innerContent.split('\\\\')[0] || '').split('&').length);
+
+        const rows = innerContent
+          .trim()
+          .split(/\\\\\s*\n?/)
+          .map((r: string) => r.trim())
+          .filter((r: string) => r.length > 0);
+
+        const esc = (s: string) =>
+          String(s)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+
+        const htmlRows = rows
+          .map((row: string) => {
+            if (/^\\hline\s*$/.test(row)) {
+              // represent hline as a separator row
+              return `<tr class="hline"><td colspan="${colCount}" style="border-top:1px solid #e5e7eb;padding:0"></td></tr>`;
+            }
+            const cells = row.split(/&/g).map((c: string) => esc(c.replace(/\\hline/g, '').trim()));
+            // pad cells if fewer than colCount
+            while (cells.length < colCount) cells.push('');
+            return `<tr>${cells.map((c: string) => `<td>${c}</td>`).join('')}</tr>`;
+          })
+          .join('');
+
+        const tableHtml = `<div class="latex-table"><table>${htmlRows}</table></div>`;
+
+        if (createToken) {
+          // store raw inner content and column spec so we can render cell TeX later
+          return createToken('table', { raw: innerContent, colSpec });
+        }
+        return tableHtml;
+      }
+    );
+
+    // ----------------------------------------------------
     // 3. Normalize math environments
     // ----------------------------------------------------
     out = out.replace(
@@ -145,7 +295,23 @@ export default function ViewerClient({
     out = out.replace(
       /\\begin\{([a-zA-Z*]+)\}[\s\S]*?\\end\{\1\}/g,
       (full, env) => {
-        const allowed = ["align", "align*", "equation", "equation*", "cases"];
+        // Keep table/tabular and common environments; remove only truly unsupported ones.
+        const allowed = [
+          "align",
+          "align*",
+          "equation",
+          "equation*",
+          "cases",
+          // tables
+          "table",
+          "table*",
+          "tabular",
+          "tabular*",
+          "tabularx",
+          "longtable",
+          // layout
+          "center",
+        ];
         if (allowed.includes(env)) return full;
         return "";
       }
@@ -268,13 +434,24 @@ export default function ViewerClient({
           return t;
         };
 
-        // @ts-ignore
-        const normalized = normalizeTex(tex, createToken);
+  // @ts-ignore
+  const normalized = normalizeTex(tex, createToken);
 
         // @ts-ignore
         const generator = new latex.HtmlGenerator({ hyphenate: false });
+        // Ensure we pass a full LaTeX document to latex.parse
+        const wrapIfNeeded = (s: string) => {
+          if (/\\begin\{document\}/.test(s)) return s;
+          // extract any \usepackage lines and remove them from body so they appear only in preamble
+          const pkgsArr = s.match(/\\usepackage\{[^}]+\}/g) || [];
+          const pkgs = pkgsArr.join("\n");
+          const body = s.replace(/\\usepackage\{[^}]+\}\s*/g, "");
+          return `\\documentclass{article}\n${pkgs}\n\\begin{document}\n${body}\n\\end{document}`;
+        };
+
+        const wrapped = wrapIfNeeded(normalized);
         // @ts-ignore
-        const doc = latex.parse(normalized, { generator }).htmlDocument();
+        const doc = latex.parse(wrapped, { generator }).htmlDocument();
         if (cancelled) return;
 
         let outHtml = doc.documentElement.innerHTML;
@@ -356,6 +533,28 @@ export default function ViewerClient({
               );
               return `<div style="font-weight:600; margin-top:0.5rem; text-align:center;">${esc}</div>`;
             }
+            if (type === "table") {
+              try {
+                const rawInner = String(payload.raw || "");
+                const colSpec = String(payload.colSpec || "");
+                // Build a minimal tabular wrapper to let latex.js parse inner cells
+                const fake = `\\begin{tabular}{${colSpec}}${rawInner}\\end{tabular}`;
+                // @ts-ignore
+                const gen = new latex.HtmlGenerator({ hyphenate: false });
+                const fakeWrapped = wrapIfNeeded(fake);
+                // @ts-ignore
+                const doc2 = latex.parse(fakeWrapped, { generator: gen }).htmlDocument();
+                const innerHtml = doc2.documentElement.innerHTML;
+                // If latex.js didn't produce a table, fall back to simple renderer
+                if (!innerHtml || innerHtml.indexOf("<table") === -1) {
+                  return renderTabularToHtml(rawInner, colSpec);
+                }
+                return innerHtml;
+              } catch (e) {
+                // fallback to simple tabular->HTML renderer
+                return renderTabularToHtml(String(payload.raw || ""), String(payload.colSpec || ""));
+              }
+            }
             return "";
           }
         );
@@ -398,6 +597,14 @@ export default function ViewerClient({
           }
         );
 
+        // For debugging: expose normalized text and token map via window if requested
+        try {
+          const qp = new URLSearchParams(window.location.search || "");
+          if (qp.get("debug") === "latex") {
+            (window as any).__latex_debug = { normalized, tokenMap: Array.from(tokenMap.entries()) };
+          }
+        } catch (e) {}
+
         setHtml(processedHtml);
       } catch (e: any) {
         if (!cancelled) setError(String(e));
@@ -413,8 +620,25 @@ export default function ViewerClient({
   if (error) return <div className="text-red-600">Error: {error}</div>;
   if (!html) return <div>Rendering...</div>;
 
+  // If debug mode was enabled, show normalized/text/tokenMap from window.__latex_debug
+  const qp = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
+  const debugOn = qp?.get("debug") === "latex";
+  const dbg: any = typeof window !== "undefined" ? (window as any).__latex_debug : null;
+
   return (
     <div>
+      {debugOn && dbg && (
+        <details className="mb-4 p-3 bg-gray-50 border rounded">
+          <summary className="font-semibold">LaTeX debug (normalized & tokens)</summary>
+          <div style={{ maxHeight: 300, overflow: "auto", whiteSpace: "pre-wrap", fontFamily: "monospace" }}>
+            <h4>normalized:</h4>
+            <pre>{String(dbg.normalized || "")}</pre>
+            <h4>tokens (table payloads):</h4>
+            <pre>{JSON.stringify(dbg.tokenMap?.filter((t: any) => String(t[1].type) === "table") || [], null, 2)}</pre>
+          </div>
+        </details>
+      )}
+
       <div
         className="latex-rendered mt-4 prose max-w-none"
         dangerouslySetInnerHTML={{ __html: html }}

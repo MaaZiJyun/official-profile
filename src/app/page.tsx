@@ -28,19 +28,37 @@ export default function Home() {
         <h1 className="text-xl font-bold underline">INTRODUCTION</h1>
         <div className="mt-2 space-y-2">
           <p>
-            ZiJyun Maa is a Master’s student in Blockchain Technology at The
-            Hong Kong Polytechnic University. He received his Bachelor of
-            Science in Software Engineering from Universiti Putra Malaysia in
-            2024. His native language is Mandarin, and he is fluent in English
-            with an IELTS score of 7.
+            ZiJyun Maa is a Master’s student in Blockchain Technology at{" "}
+            <a
+              href="https://www.polyu.edu.hk/"
+              className="text-red-800 hover:underline"
+            >
+              The Hong Kong Polytechnic University
+            </a>
+            . He received his Bachelor of Science in Software Engineering from{" "}
+            <a
+              href="https://www.upm.edu.my/"
+              className="text-red-800 hover:underline"
+            >
+              Universiti Putra Malaysia
+            </a>{" "}
+            in 2024. His native language is Mandarin, and he is fluent in
+            English with an IELTS score of 7.
           </p>
           <p>
             He has worked on projects across multiple domains, including
-            software engineering, communication networks, reinforcement
-            learning, blockchain systems, and the Internet of Things (IoT). His
-            academic and research interests include software engineering,
-            networked systems, machine learning, reinforcement learning, IoT,
-            mobile and edge computing, and embedded systems. He is particularly
+            <span className="font-semibold"> Software Engineering</span>,{" "}
+            <span className="font-semibold">Networks</span>,{" "}
+            <span className="font-semibold">Reinforcement Learning</span>,{" "}
+            <span className="font-semibold">Blockchain Systems</span>, and {" "}
+            <span className="font-semibold">Internet of Things (IoT)</span>. His
+            academic and research interests include <span className="font-semibold">Software Engineering</span>,
+            <span className="font-semibold"> Networked Systems</span>,
+            <span className="font-semibold"> Machine Learning</span>,
+            <span className="font-semibold"> Reinforcement Learning</span>,
+            <span className="font-semibold"> IoT</span>,
+            <span className="font-semibold"> Mobile and Edge Computing</span>,
+            and <span className="font-semibold">Embedded Systems</span>. He is particularly
             interested in applying these technologies to real-world problems in
             science, education, and healthcare.
           </p>
