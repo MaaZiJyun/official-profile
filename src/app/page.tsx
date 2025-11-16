@@ -77,7 +77,7 @@ export default function Home() {
                     alt={p.title}
                     width={400}
                     height={200}
-                    className="mx-auto h-full w-full object-cover rounded-md filter grayscale-70 group-hover:grayscale-0 transition duration-300 ease-in-out"
+                    className="mx-auto h-full w-full object-cover rounded-md filter grayscale-50 group-hover:grayscale-0 transition duration-300 ease-in-out"
                   />
                 </div>
                 <div className="mt-3 text-lg font-semibold">{p.title}</div>

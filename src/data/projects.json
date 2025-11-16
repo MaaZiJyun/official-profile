@@ -29,7 +29,7 @@
     "href": "",
     "supervisor": "Prof. Ng Keng Yap",
     "date": "10/2021 – 04/2022",
-    "img": "/smart_cradle/002.png",
+    "img": "/smart_cradle/001.png",
     "intro": "Bachelor IoT project on baby-monitoring hardware and application development.",
     "sections": [
       {
@@ -54,7 +54,7 @@
     "href": "https://momcare-landingpage.vercel.app/",
     "supervisor": "Prof. Ng Keng Yap",
     "date": "10/2021 – 04/2022",
-    "img": "/momcare/001.png",
+    "img": "/momcare/003.png",
     "intro": "Bachelor IoT project on baby-monitoring hardware and application development.",
     "sections": [
       {
@@ -63,12 +63,12 @@
         "description": "A smart assistant software for personalized health management and support for pregnant women."
       },
       {
-        "image": "/momcare/001.png",
+        "image": "/momcare/002.png",
         "subtitle": "Objective of App",
         "description": "To develop a smart assistant software aimed at providing personalized health management and support for pregnant women, thereby improving their health during pregnancy. This project is a collaboration between the UPM Department of Software Engineering and Columbia Asia Hospital in Malaysia."
       },
       {
-        "image": "/momcare/002.png",
+        "image": "/momcare/003.png",
         "subtitle": "Momcare App Interface",
         "description": "The project began with collaborative research with doctors at Columbia Asia Hospital to define the software requirements and user needs; the interface was prototyped using Figma to ensure a user-friendly experience. The mobile application was implemented using Flutter and Dart, while back-end services (data storage, processing and user management) were built with Laravel and PHP."
       }
