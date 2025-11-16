@@ -4,6 +4,7 @@ import path from "path";
 type Post = {
   file: string;
   title: string;
+  date: string;
   excerpt: string;
 };
 
@@ -25,13 +26,45 @@ async function loadTexPosts(): Promise<Post[]> {
 
       // try to extract \title{...} or fallback to filename
       const titleMatch = raw.match(/\\title\{([^}]+)\}/);
+      const dateMatch = raw.match(/\\date\{([^}]+)\}/);
       const title = titleMatch
         ? titleMatch[1].trim()
         : file.replace(/\.tex$/, "");
+      const date = dateMatch ? dateMatch[1].trim() : "";
 
-      // simple excerpt: take first non-empty paragraph, but strip LaTeX markup
-      const paragraphMatch =
-        raw.split(/\r?\n\r?\n/).find((p) => p.trim().length > 0) ?? "";
+      // simple excerpt: extract content inside \begin{document}...\end{document}
+      // and take the first non-empty paragraph from the document body (not title/author/date)
+      let body = raw;
+      const docMatch = raw.match(
+        /\\begin\{document\}([\s\S]*?)\\end\{document\}/
+      );
+      if (docMatch) body = docMatch[1];
+      // Prefer the first sentence inside \section{Introduction} if present.
+      // Fallback: extract content inside \begin{document}...\end{document}
+      // and take the first non-empty paragraph from the document body.
+      let paragraphMatch = "";
+      const introMatch = raw.match(
+        /\\section\{Introduction\}([\s\S]*?)(?:\\section\{|\\end\{document\}|$)/i
+      );
+      if (introMatch) {
+        // take the first 50 characters from the introduction section (cleaned)
+        const introBody = introMatch[1].trim();
+        const cleanedIntro = introBody
+          .replace(/%.*$/gm, "")
+          .replace(/\\[a-zA-Z@]+(?:\{[^}]*\})?/g, "")
+          .replace(/[{}]/g, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+        paragraphMatch = cleanedIntro.slice(0, 200).trim();
+      } else {
+        let body = raw;
+        const docMatch = raw.match(
+          /\\begin\{document\}([\s\S]*?)\\end\{document\}/
+        );
+        if (docMatch) body = docMatch[1];
+        paragraphMatch =
+          body.split(/\r?\n\r?\n/).find((p) => p.trim().length > 0) ?? "";
+      }
 
       function stripTex(text: string) {
         if (!text) return "";
@@ -58,7 +91,7 @@ async function loadTexPosts(): Promise<Post[]> {
       const cleaned = stripTex(paragraphMatch);
       const excerpt = cleaned.slice(0, 300);
 
-      return { file, title, excerpt };
+      return { file, title, date, excerpt };
     })
   );
 
@@ -83,12 +116,19 @@ export default async function PostsPage() {
                 key={p.file}
               >
                 <article className="rounded-lg hover:cursor-pointer py-3 px-4 hover:scale-[1.05] hover:shadow-xl transition-transform group">
-                  <p className="text-xl font-semibold text-foreground">
-                    {p.title}
-                  </p>
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <div className="text-xl font-semibold hover:underline">
+                        {p.title}
+                      </div>
+                    </div>
+                    <div className="text-sm text-zinc-500">{p.date}</div>
+                  </div>
                   <p className="mt-1 text-sm text-zinc-600">{p.excerpt}...</p>
                   <div className="mt-2">
-                    <p className="text-sm text-red-600 underline">More Details</p>
+                    <p className="text-sm text-red-600 underline">
+                      More Details
+                    </p>
                   </div>
                 </article>
               </a>
