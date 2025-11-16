@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid';
 
 type Section = {
@@ -18,13 +18,31 @@ export default function SlideShow({
   link: string;
 }) {
   const [index, setIndex] = useState(0);
+  const duration = 8000; // ms per slide
+  const [progress, setProgress] = useState(0); // 0..1
+  const rafRef = useRef<number | null>(null);
+  const startRef = useRef<number | null>(null);
 
   useEffect(() => {
-    const t = setInterval(
-      () => setIndex((i) => (i + 1) % sections.length),
-      8000
-    );
-    return () => clearInterval(t);
+    // animation loop driving progress
+    function step(ts: number) {
+      if (startRef.current == null) startRef.current = ts;
+      const elapsed = ts - (startRef.current || 0);
+      const p = Math.min(1, elapsed / duration);
+      setProgress(p);
+      if (p >= 1) {
+        setIndex((i) => (i + 1) % sections.length);
+        startRef.current = ts;
+        setProgress(0);
+      }
+      rafRef.current = requestAnimationFrame(step);
+    }
+    rafRef.current = requestAnimationFrame(step);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+      startRef.current = null;
+    };
   }, [sections.length]);
 
   if (!sections || sections.length === 0) return null;
@@ -33,18 +51,33 @@ export default function SlideShow({
     setIndex((i) => (i - 1 + sections.length) % sections.length);
   const next = () => setIndex((i) => (i + 1) % sections.length);
 
+  // reset progress when user manually navigates
+  const manualSetIndex = (i: number) => {
+    setIndex(i);
+    setProgress(0);
+    startRef.current = null;
+  };
+
   return (
     <div className="relative w-full">
-      <div className="mb-2 flex justify-center gap-2">
+      <div className="mb-2 flex justify-center gap-2 w-full">
         {sections.map((_, i) => (
           <button
             key={i}
-            onClick={() => setIndex(i)}
+            onClick={() => manualSetIndex(i)}
             aria-label={`Go to slide ${i + 1}`}
-            className={`h-2 w-full rounded-full hover:cursor-pointer ${
-              i === index ? "bg-zinc-800" : "bg-zinc-300"
-            }`}
-          />
+            className="relative h-2 w-full rounded-full overflow-hidden hover:cursor-pointer bg-zinc-300"
+          >
+            {/* already-seen slides are filled */}
+            {i < index && <div className="absolute inset-0 bg-zinc-800" />}
+            {/* active slide shows progress fill */}
+            {i === index && (
+              <div
+                className="absolute left-0 top-0 bottom-0 bg-red-500"
+                style={{ width: `${Math.round(progress * 100)}%`, transition: "width 120ms linear" }}
+              />
+            )}
+          </button>
         ))}
       </div>
       <div className="overflow-hidden rounded-xl">
@@ -78,14 +111,22 @@ export default function SlideShow({
 
       <button
         aria-label="Previous"
-        onClick={prev}
+        onClick={() => {
+          prev();
+          setProgress(0);
+          startRef.current = null;
+        }}
         className="absolute left-2 top-1/2 -translate-y-1/2 text-white hover:cursor-pointer p-2"
       >
         ◀
       </button>
       <button
         aria-label="Next"
-        onClick={next}
+        onClick={() => {
+          next();
+          setProgress(0);
+          startRef.current = null;
+        }}
         className="absolute right-2 top-1/2 -translate-y-1/2 text-white hover:cursor-pointer p-2"
       >
         ▶
