@@ -31,14 +31,14 @@ export default function Home() {
             ZiJyun Maa is a Master’s student in Blockchain Technology at{" "}
             <a
               href="https://www.polyu.edu.hk/"
-              className="text-red-800 hover:underline"
+              className="text-red-600 hover:underline"
             >
               The Hong Kong Polytechnic University
             </a>
             . He received his Bachelor of Science in Software Engineering from{" "}
             <a
               href="https://www.upm.edu.my/"
-              className="text-red-800 hover:underline"
+              className="text-red-600 hover:underline"
             >
               Universiti Putra Malaysia
             </a>{" "}
