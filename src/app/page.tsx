@@ -16,7 +16,7 @@ export default function Home() {
         />
         <div>
           <h1 className="text-2xl font-bold">Zi Jyun, Maa</h1>
-          <h1 className="text-3xl font-bold tracking-wider">馬志遠</h1>
+          <h1 className="text-3xl font-bold tracking-wider">馬致遠</h1>
           <CopyEmailButton
             email="maazijyun@gmail.com"
             display={"maazijyun[at]gmail[dot]com"}
