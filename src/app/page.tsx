@@ -50,17 +50,23 @@ export default function Home() {
             <span className="font-semibold"> Software Engineering</span>,{" "}
             <span className="font-semibold">Networks</span>,{" "}
             <span className="font-semibold">Reinforcement Learning</span>,{" "}
-            <span className="font-semibold">Blockchain Systems</span>, and {" "}
+            <span className="font-semibold">Blockchain Systems</span>, and{" "}
             <span className="font-semibold">Internet of Things (IoT)</span>. His
-            academic and research interests include <span className="font-semibold">Software Engineering</span>,
+            academic and research interests include{" "}
+            <span className="font-semibold">Software Engineering</span>,
             <span className="font-semibold"> Networked Systems</span>,
             <span className="font-semibold"> Machine Learning</span>,
             <span className="font-semibold"> Reinforcement Learning</span>,
             <span className="font-semibold"> IoT</span>,
             <span className="font-semibold"> Mobile and Edge Computing</span>,
-            and <span className="font-semibold">Embedded Systems</span>. He is particularly
-            interested in applying these technologies to real-world problems in
-            science, education, and healthcare.
+            and <span className="font-semibold">Embedded Systems</span>. He is
+            particularly interested in applying these technologies to real-world
+            problems in science, education, and healthcare.
+          </p>
+        </div>
+        <div className="mt-4">
+          <p>
+            知行合一<span className="italic"> Mind and Hand</span>
           </p>
         </div>
       </div>
