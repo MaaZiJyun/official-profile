@@ -31,7 +31,7 @@ export default function RootLayout({
       <body
         className={`select-none ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <header className="border-b bg-white/50 dark:bg-black/50">
+        <header className="border-b">
           <Nav />
         </header>
 
