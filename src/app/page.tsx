@@ -25,54 +25,58 @@ export default function Home() {
       </div>
 
       <div className="mt-8 text-justify">
-        <h1 className="text-xl font-bold underline">INTRODUCTION</h1>
+        <h1 className="text-xl font-bold underline">ABOUT</h1>
         <div className="mt-2 space-y-2">
           <p>
-            ZiJyun Maa is a Master’s student in Blockchain Technology at{" "}
+            I am an ENTJ/INTJ personality type. My hobbies include reading,
+            hiking, composing music, and playing violin. My native language is
+            Chinese Mandarin, and I am fluent in English with an IELTS score of
+            7. I received my Master’s degree in{" "}
+            <span className="font-semibold">Blockchain Technology</span>, at{" "}
             <a
               href="https://www.polyu.edu.hk/"
-              className="text-red-600 hover:underline"
+              className="text-red-600 hover:underline hover:cursor-pointer"
             >
-              The Hong Kong Polytechnic University
-            </a>
-            . He received his Bachelor of Science in Software Engineering from{" "}
+              The Hong Kong Polytechnic University (PolyU)
+            </a>{" "}
+            in March 2026, and my Bachelor’s degree in{" "}
+            <span className="font-semibold">Software Engineering</span>, from{" "}
             <a
               href="https://www.upm.edu.my/"
-              className="text-red-600 hover:underline"
+              className="text-red-600 hover:underline hover:cursor-pointer"
             >
-              Universiti Putra Malaysia
+              Universiti Putra Malaysia (UPM)
             </a>{" "}
-            in 2024. His native language is Mandarin, and he is fluent in
-            English with an IELTS score of 7.
+            in September 2024.
           </p>
           <p>
-            He has worked on projects across multiple domains, including
-            <span className="font-semibold"> Software Engineering</span>,{" "}
-            <span className="font-semibold">Networks</span>,{" "}
-            <span className="font-semibold">Reinforcement Learning</span>,{" "}
-            <span className="font-semibold">Blockchain Systems</span>, and{" "}
-            <span className="font-semibold">Internet of Things (IoT)</span>. His
-            academic and research interests include{" "}
+            I have worked on projects (research & business) across multiple
+            domains, including{" "}
+            <span className="font-semibold">Mobile & Web App Development</span>,{" "}
+            <span className="font-semibold">Resource Joint Optimization</span>,{" "}
+            <span className="font-semibold">Blockchain Development</span>, and{" "}
+            <span className="font-semibold">
+              Raspberry PI & Jetson Orin NX Programming
+            </span>
+            . My research interests include{" "}
             <span className="font-semibold">Software Engineering</span>,
-            <span className="font-semibold"> Networked Systems</span>,
-            <span className="font-semibold"> Machine Learning</span>,
             <span className="font-semibold"> Reinforcement Learning</span>,
-            <span className="font-semibold"> IoT</span>,
-            <span className="font-semibold"> Mobile and Edge Computing</span>,
-            and <span className="font-semibold">Embedded Systems</span>. He is
+            <span className="font-semibold"> IoT</span>, and
+            <span className="font-semibold"> Edge Computing</span>. I am
             particularly interested in applying these technologies to real-world
             problems in science, education, and healthcare.
           </p>
-        </div>
-        <div className="mt-4">
-          <p>
-            知行合一<span className="italic"> Mind and Hand</span>
+          <p className="italic">
+            If you want to know more about me, please feel free to contact me
+            via email or LinkedIn. I am always open to discussing potential
+            collaborations, job opportunities, or just having a chat about
+            technology and research.
           </p>
         </div>
       </div>
 
       <div className="mt-8">
-        <h1 className="text-xl font-bold underline">PORTFOLIO</h1>
+        <h1 className="text-xl font-bold underline">PROJECTS</h1>
         <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
           {projects.map((p) => (
             <Link href={`/projects/${p.slug}`} key={p.title}>
