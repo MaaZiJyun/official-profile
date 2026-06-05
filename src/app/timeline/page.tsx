@@ -29,6 +29,7 @@ const timelineItems = [
     title:
       "Graduated in The Hong Kong Polytechnic University (PolyU) for Master’s Degree in Blockchain Technology",
     org: "",
+    image: "/photos/mas_grad.jpg",
     supervisor: "",
     bullets: [],
   },
@@ -36,7 +37,7 @@ const timelineItems = [
     period: "09/2025 - 12/2025",
     category: "Student",
     title:
-      "Master Thesis on Resource-Aware Online Earth Observation Task Offloading",
+      "Master Thesis: Resource-Aware Online Earth Observation Task Offloading",
     org: "HKPU, Dept. of Computing",
     supervisor: "Prof. Liu Yu",
     bullets: [
@@ -56,10 +57,33 @@ const timelineItems = [
     bullets: [],
   },
   {
+    period: "06/2024 - 03/2024",
+    category: "Teaching Assistant",
+    title:
+      "IELTS Teaching Assistant",
+    org: "Beijing Qingfen Education Technology Co., Ltd.",
+    supervisor: "Mr. Shuqiang Peng",
+    bullets: [
+      "Assisted in teaching IELTS preparation courses to students, including providing guidance on writing, speaking, listening, and reading skills.",
+      "Organized practice sessions and provided feedback to students to help them improve their performance in the IELTS examination.",
+    ],
+  },
+  {
+    period: "01/2024",
+    category: "Certification",
+    title:
+      "IELTS Academic with Overall Band Score of 7",
+    org: "",
+    image: "/certs/ielts_3.png",
+    supervisor: "",
+    bullets: [],
+  },
+  {
     period: "03/2023 - 03/2024",
     category: "Mobile Developer",
     title: "EOS Credit Mobile App for Online Loan",
     org: "EOS Systems Sdn. Bhd.",
+    image: "/photos/eos_intern.jpg",
     supervisor: "Dr. Anita, Prof. Ng Keng Yap and Mr. Benjamin Lim",
     bullets: [
       "Developed by Flutter and finally released EOS Credit on Google Play Store.",
@@ -72,12 +96,23 @@ const timelineItems = [
     title:
       "Graduated in Universiti Putra Malaysia (UPM) for Bachelor’s Degree in Software Engineering",
     org: "",
+    image: "/photos/bach_grad.jpg",
+    supervisor: "",
+    bullets: [],
+  },
+  {
+    period: "12/2022",
+    category: "Certification",
+    title:
+      "IELTS Academic with Overall Band Score of 6.5",
+    org: "",
+    image: "/certs/ielts_2.png",
     supervisor: "",
     bullets: [],
   },
   {
     period: "10/2022 - 02/2023",
-    category: "Student | Supervisor: Prof. Ng Keng Yap",
+    category: "Student",
     title: "Bachelor FYP: Smart Cradle System for Infants",
     org: "UPM, Dept. of Software Engineering",
     supervisor: "Prof. Ng Keng Yap",
@@ -107,9 +142,21 @@ const timelineItems = [
     title: "Third Place in Huawei ICT Competition Malaysia 2021-2022",
     org: "UPM and Huawei Malaysia",
     supervisor: "",
+    image: "/certs/huawei_3rd.jpg",
     bullets: [
       "Participated in the Huawei ICT competition 2021-2022, a nationwide competition organized by Huawei and UPM",
       "Won the third place",
+    ],
+  },
+  {
+    period: "10/2021",
+    category: "Presentation",
+    title: "International Learning Online Sharing Experiences",
+    org: "FSKTM, Universiti Putra Malaysia",
+    image: "/certs/mpp_cert.png",
+    supervisor: "",
+    bullets: [
+      "For contribution as a speaker titled: \"International Learning Online Sharing Experiences\" at Minggu Perkasa Putra (MPP) -Faculty Level On Minggu Putra Perkasa"
     ],
   },
   {
@@ -117,6 +164,7 @@ const timelineItems = [
     category: "Certification",
     title: "Certificate of Huawei Certified ICT Associate (HCIA)",
     org: "UPM and Huawei Malaysia",
+    image: "/certs/huawei_cert.jpg",
     supervisor: "",
     bullets: [
       "Paticipated in the Huawei HCIA examination preparation course provided by UPM",
@@ -193,6 +241,16 @@ export default function TimelinePage() {
                     </div>
                   </div>
                 </div>
+                {item.image && (
+                  <div className="mt-4">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="max-w-xs w-full rounded-md shadow-md object-contain"
+                    />
+                  </div>
+                )}
+
                 {item.bullets.length > 0 && (
                   <ul className="mt-5 text-zinc-700">
                     {item.bullets.map((bullet) => (
