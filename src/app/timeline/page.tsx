@@ -1,5 +1,14 @@
 const timelineItems = [
   {
+    period: "05/2026",
+    category: "",
+    title:
+      "Submitted the paper on Latency-Energy Co-Optimized Task Scheduling for Earth Observation in Orbital Edge Computing to MASS 2026",
+    org: "",
+    supervisor: "",
+    bullets: [],
+  },
+  {
     period: "03/2026 - 07/2026",
     category: "Research Assistant",
     title:
@@ -12,6 +21,16 @@ const timelineItems = [
       "Implemented a simulation program for experiments and validated system performance by baseline comparison.",
       "Wrote the paper for publication.",
     ],
+  },
+
+  {
+    period: "03/2026",
+    category: "",
+    title:
+      "Graduated in The Hong Kong Polytechnic University (PolyU) for Master’s Degree in Blockchain Technology",
+    org: "",
+    supervisor: "",
+    bullets: [],
   },
   {
     period: "09/2025 - 12/2025",
@@ -28,6 +47,15 @@ const timelineItems = [
     ],
   },
   {
+    period: "09/2024",
+    category: "",
+    title:
+      "Registered in The Hong Kong Polytechnic University (PolyU) for Master’s Degree in Blockchain Technology",
+    org: "",
+    supervisor: "",
+    bullets: [],
+  },
+  {
     period: "03/2023 - 03/2024",
     category: "Mobile Developer",
     title: "EOS Credit Mobile App for Online Loan",
@@ -37,6 +65,15 @@ const timelineItems = [
       "Developed by Flutter and finally released EOS Credit on Google Play Store.",
       "Created a demonstration commercial video to promote the app.",
     ],
+  },
+  {
+    period: "09/2023",
+    category: "",
+    title:
+      "Graduated in Universiti Putra Malaysia (UPM) for Bachelor’s Degree in Software Engineering",
+    org: "",
+    supervisor: "",
+    bullets: [],
   },
   {
     period: "10/2022 - 02/2023",
@@ -63,6 +100,37 @@ const timelineItems = [
       "Generated databases, URIs, and database operations for data storage, processing, and user management.",
       "Developed core modules by Flutter for health data recording, reminders, and personalized suggestions.",
     ],
+  },
+  {
+    period: "10/2021 - 11/2021",
+    category: "Competition",
+    title: "Third Place in Huawei ICT Competition Malaysia 2021-2022",
+    org: "UPM and Huawei Malaysia",
+    supervisor: "",
+    bullets: [
+      "Participated in the Huawei ICT competition 2021-2022, a nationwide competition organized by Huawei and UPM",
+      "Won the third place",
+    ],
+  },
+  {
+    period: "08/2021 - 09/2021",
+    category: "Certification",
+    title: "Certificate of Huawei Certified ICT Associate (HCIA)",
+    org: "UPM and Huawei Malaysia",
+    supervisor: "",
+    bullets: [
+      "Paticipated in the Huawei HCIA examination preparation course provided by UPM",
+      "Passed the Huawei HCIA certification examination and obtained the certificate",
+    ],
+  },
+  {
+    period: "09/2019",
+    category: "",
+    title:
+      "Registered in Universiti Putra Malaysia (UPM) for Bachelor’s Degree in Software Engineering",
+    org: "",
+    supervisor: "",
+    bullets: [],
   },
 ];
 
@@ -99,13 +167,19 @@ export default function TimelinePage() {
                   {item.period}
                 </div>
               </div>
-              <div className="rounded-lg bg-white/90 p-6 shadow-lg transition-transform duration-300 hover:-translate-y-1">
+              <div
+                className={` ${item.category === "" ? "p-3" : "bg-white shadow-lg p-6"} rounded-lg transition-transform duration-300 hover:-translate-y-1`}
+              >
                 <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between md:gap-6">
                   <div className="space-y-2">
-                    <div className="text-sm font-medium uppercase text-zinc-500">
-                      {item.category}
-                    </div>
-                    <h2 className="text-xl font-bold leading-tight text-zinc-900 md:text-2xl">
+                    {item.category !== "" && (
+                      <div className="text-sm font-medium uppercase text-zinc-500">
+                        {item.category}
+                      </div>
+                    )}
+                    <h2
+                      className={`${item.category === "" ? "italic" : "font-bold text-xl"} leading-tight text-zinc-900`}
+                    >
                       {item.title}
                     </h2>
                   </div>
@@ -119,18 +193,19 @@ export default function TimelinePage() {
                     </div>
                   </div>
                 </div>
-
-                <ul className="mt-5 text-zinc-700">
-                  {item.bullets.map((bullet) => (
-                    <li
-                      key={bullet}
-                      className="flex gap-3 leading-7 items-center justify-start"
-                    >
-                      <span className="h-2 w-2 flex-none rounded-full bg-red-700" />
-                      <span>{bullet}</span>
-                    </li>
-                  ))}
-                </ul>
+                {item.bullets.length > 0 && (
+                  <ul className="mt-5 text-zinc-700">
+                    {item.bullets.map((bullet) => (
+                      <li
+                        key={bullet}
+                        className="flex gap-3 text-sm items-center justify-start"
+                      >
+                        <span className="h-1 w-1 flex-none rounded-full bg-black" />
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
             </article>
           ))}
