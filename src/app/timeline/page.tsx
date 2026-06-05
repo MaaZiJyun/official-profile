@@ -190,7 +190,7 @@ export default function TimelinePage() {
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-red-700">
             Timeline
           </p>
-          <h1 className="text-3xl font-bold tracking-tight text-black md:text-4xl">
+          <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
             A Review Timeline of My Research, Academic, and Industry Experience.
           </h1>
           <p className="text-sm text-zinc-600 md:text-lg">
@@ -201,7 +201,7 @@ export default function TimelinePage() {
       </div>
 
       <div className="relative">
-        <div className="absolute left-4 top-2 h-full w-1 rounded-full bg-gradient-to-b from-red-600 via-red-300 to-white md:left-6" />
+        <div className="absolute left-4 top-2 h-full w-1 rounded-full bg-gradient-to-b from-red-600/100 via-red-600/50 red-600/10 md:left-6" />
 
         <div className="space-y-6">
           {timelineItems.map((item) => (
@@ -211,12 +211,12 @@ export default function TimelinePage() {
             >
               <div className="relative mb-4 flex items-center">
                 <span className="absolute -left-8 top-1/2 h-7 w-7 -translate-y-1/2 rounded-full border-4 border-white bg-red-700 shadow-lg md:-left-13" />
-                <div className="inline-flex w-fit rounded-full bg-red-50 px-3 py-1 text-sm font-semibold text-red-700">
+                <div className="inline-flex w-fit rounded-full bg-red-700/20 px-3 py-1 text-sm font-semibold text-red-700">
                   {item.period}
                 </div>
               </div>
               <div
-                className={` ${item.category === "" ? "p-3" : "bg-white shadow-lg p-6"} rounded-lg transition-transform duration-300 hover:-translate-y-1`}
+                className={` ${item.category === "" ? "p-3" : "shadow-lg p-6"} rounded-lg transition-transform duration-300 hover:-translate-y-1`}
               >
                 <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between md:gap-6">
                   <div className="space-y-2">
@@ -226,14 +226,14 @@ export default function TimelinePage() {
                       </div>
                     )}
                     <h2
-                      className={`${item.category === "" ? "italic" : "font-bold text-xl"} leading-tight text-zinc-900`}
+                      className={`${item.category === "" ? "italic" : "font-bold text-xl"} leading-tight `}
                     >
                       {item.title}
                     </h2>
                   </div>
 
                   <div className="text-left md:max-w-xs md:text-right">
-                    <div className="text-sm font-semibold text-zinc-900">
+                    <div className="text-sm font-semibold ">
                       {item.org}
                     </div>
                     <div className="mt-1 text-sm text-zinc-500">
