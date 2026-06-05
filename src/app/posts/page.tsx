@@ -36,7 +36,7 @@ async function loadTexPosts(): Promise<Post[]> {
       // and take the first non-empty paragraph from the document body (not title/author/date)
       let body = raw;
       const docMatch = raw.match(
-        /\\begin\{document\}([\s\S]*?)\\end\{document\}/
+        /\\begin\{document\}([\s\S]*?)\\end\{document\}/,
       );
       if (docMatch) body = docMatch[1];
       // Prefer the first sentence inside \section{Introduction} if present.
@@ -44,7 +44,7 @@ async function loadTexPosts(): Promise<Post[]> {
       // and take the first non-empty paragraph from the document body.
       let paragraphMatch = "";
       const introMatch = raw.match(
-        /\\section\{Introduction\}([\s\S]*?)(?:\\section\{|\\end\{document\}|$)/i
+        /\\section\{Introduction\}([\s\S]*?)(?:\\section\{|\\end\{document\}|$)/i,
       );
       if (introMatch) {
         // take the first 50 characters from the introduction section (cleaned)
@@ -59,7 +59,7 @@ async function loadTexPosts(): Promise<Post[]> {
       } else {
         let body = raw;
         const docMatch = raw.match(
-          /\\begin\{document\}([\s\S]*?)\\end\{document\}/
+          /\\begin\{document\}([\s\S]*?)\\end\{document\}/,
         );
         if (docMatch) body = docMatch[1];
         paragraphMatch =
@@ -75,7 +75,7 @@ async function loadTexPosts(): Promise<Post[]> {
         // remove display and inline math ($...$, $$...$$, \[...\], \(...\))
         s = s.replace(
           /\$\$[\s\S]*?\$\$|\$[^$]*\$|\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)/g,
-          " "
+          " ",
         );
         // replace commands with braced argument: \cmd[opt]{arg} or \cmd{arg} -> keep arg
         s = s.replace(/\\[a-zA-Z@]+\*?\s*(?:\[[^\]]*\])?\s*\{([^}]*)\}/g, "$1");
@@ -92,7 +92,7 @@ async function loadTexPosts(): Promise<Post[]> {
       const excerpt = cleaned.slice(0, 300);
 
       return { file, title, date, excerpt };
-    })
+    }),
   );
 
   return posts;
@@ -102,13 +102,26 @@ export default async function PostsPage() {
   const posts = await loadTexPosts();
 
   return (
-    <div className="mt-4">
+    <section>
+      <div className="p-8">
+        <div className="max-w-3xl space-y-4">
+          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-red-700">
+            Posts
+          </p>
+          <h1 className="text-3xl font-bold tracking-tight text-black md:text-4xl">
+            A Collection List of My Posts
+          </h1>
+          <p className="text-sm text-zinc-600 md:text-lg">
+            Those are some posts that I have written on to share my research, thoughts, and experience in software engineering, machine learning, and other related topics. 
+          </p>
+        </div>
+      </div>
       {posts.length === 0 ? (
-        <p className="mt-2 text-zinc-600">
+        <p className="mt-4 text-zinc-600">
           No .tex posts found in <code>/public/posts</code>.
         </p>
       ) : (
-        <div className="flex flex-col gap-4">
+        <div className="mt-4 flex flex-col gap-4">
           {posts.map((p) => {
             return (
               <a
@@ -136,6 +149,6 @@ export default async function PostsPage() {
           })}
         </div>
       )}
-    </div>
+    </section>
   );
 }

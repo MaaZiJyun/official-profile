@@ -77,7 +77,7 @@ export default function TimelinePage() {
           <h1 className="text-3xl font-bold tracking-tight text-black md:text-4xl">
             A Review Timeline of My Research, Academic, and Industry Experience.
           </h1>
-          <p className="text-base leading-7 text-zinc-600 md:text-lg">
+          <p className="text-sm text-zinc-600 md:text-lg">
             The entries below follow the order shown in the reference image,
             with the newest experience first.
           </p>
