@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import "./globals.css";
 import Nav from "./components/Nav";
+import Foot from "./components/Foot";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,7 +38,7 @@ export default function RootLayout({
         <main className="mx-auto max-w-4xl px-6 py-10">{children}</main>
 
         <footer className="mx-auto max-w-4xl px-6 py-8 text-sm text-zinc-500">
-          © {new Date().getFullYear()} Maa ZiJyun's Profile.
+          <Foot />
         </footer>
       </body>
     </html>
