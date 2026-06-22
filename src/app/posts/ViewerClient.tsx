@@ -465,7 +465,7 @@ export default function ViewerClient({
           theme.setAttribute("data-latexjs-theme", "1");
           theme.textContent = `
             /* Scoped LaTeX rendering styles */
-            .latex-rendered { font-family: var(--site-font, Times New Roman), serif; color: #111827; line-height: 1.6; }
+            .latex-rendered { font-family: var(--site-font, Times New Roman), serif; color: inherit; line-height: 1.6; }
             .latex-rendered h1 { font-size: 1.5rem; font-weight: 700; margin-top: 0.75rem; margin-bottom: 0.5rem; }
             .latex-rendered h2 { font-size: 1.25rem; font-weight: 600; margin-top: 0.65rem; margin-bottom: 0.45rem; }
             .latex-rendered h3 { font-size: 1.15rem; font-weight: 600; margin-top: 0.5rem; margin-bottom: 0.35rem; }
@@ -476,7 +476,7 @@ export default function ViewerClient({
             .latex-rendered img { max-width:100%; height:auto; }
             .latex-rendered em { font-style: italic; }
             .latex-rendered .bf { font-weight: 600; }
-            .latex-rendered table { border-collapse: collapse; width: 100%; margin: 0.75rem 0; border: none;}
+            .latex-rendered table { border-collapse: collapse; width: 50%; margin: 0.75rem auto; border: none;}
             .latex-rendered th, .latex-rendered td { border: none; }
             .latex-rendered li { font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; }  
             .latex-rendered li > p { margin: 0; }
