@@ -35,9 +35,9 @@ export default function Nav() {
               <li>
                 <Link
                   className="hover:underline hover:text-red-600"
-                  href="/timeline"
+                  href="/moments"
                 >
-                  Timeline
+                  Moments
                 </Link>
               </li>
             </ul>

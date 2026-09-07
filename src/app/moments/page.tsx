@@ -1,9 +1,30 @@
-const timelineItems = [
+import Image from "next/image";
+
+const moments = [
+  {
+    period: "08/2026 — 11/2026",
+    category: "Research Assistant",
+    title:
+      "Joined a project at the Green and Intelligent Manufacturing Research Center, providing research support and technical development for biological robotics, insect robotics, and intelligent control systems.",
+    org: "Green and Intelligent Manufacturing Research Center",
+    supervisor: "Prof. Ma Yuan",
+    bullets: [],
+  },
+  {
+    highlight: true,
+    period: "08/2026",
+    category: "",
+    title:
+      "My paper 'Latency-Energy Co-Optimized Task Scheduling for Earth Observation in Orbital Edge Computing' has been accepted at the 2026 IEEE 23rd International Conference on Mobile Ad Hoc and Smart Systems (MASS). The acceptance rate was 29.7%.",
+    org: "IEEE MASS 2026",
+    supervisor: "Great thanks to Prof. Liu Yu & Mr. Zhang XiangZhi",
+    bullets: [],
+  },
   {
     period: "05/2026",
     category: "",
     title:
-      "Submitted the paper on Latency-Energy Co-Optimized Task Scheduling for Earth Observation in Orbital Edge Computing to MASS 2026",
+      "Submitted the paper 'Latency-Energy Co-Optimized Task Scheduling for Earth Observation in Orbital Edge Computing' to MASS 2026",
     org: "",
     supervisor: "",
     bullets: [],
@@ -12,7 +33,7 @@ const timelineItems = [
     period: "03/2026 - 07/2026",
     category: "Research Assistant",
     title:
-      "Latency-Energy Co-Optimized Task Scheduling for Earth Observation in Orbital Edge Computing",
+      "Participated in the research on Latency-Energy Co-Optimized Task Scheduling for Earth Observation in Orbital Edge Computing",
     org: "HKPU, Dept. of Computing",
     supervisor: "Prof. Liu Yu",
     bullets: [
@@ -69,6 +90,7 @@ const timelineItems = [
     ],
   },
   {
+    highlight: true,
     period: "01/2024",
     category: "Certification",
     title:
@@ -182,92 +204,77 @@ const timelineItems = [
   },
 ];
 
-export default function TimelinePage() {
+type Moment = (typeof moments)[number];
+
+function MomentCard({ item }: { item: Moment }) {
+  return (
+    <article
+      className={`overflow-hidden rounded-2xl border shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-zinc-200/70 ${item.highlight ? "border-red-700 bg-red-700 text-white ring-1 ring-red-200" : "border-zinc-200/80 bg-white"}`}
+    >
+      {item.image && (
+        <div className="overflow-hidden bg-zinc-100">
+          <Image
+            src={item.image}
+            alt={item.title}
+            width={600}
+            height={420}
+            className="h-auto w-full object-cover transition-transform duration-500 hover:scale-105"
+          />
+        </div>
+      )}
+      <div className="space-y-4 p-5">
+        <div className="flex items-center justify-between gap-3">
+          <span className={`rounded-full px-3 py-1 text-xs font-bold tracking-wide ${item.highlight ? "bg-white/15 text-white" : "bg-red-50 text-red-700"}`}>
+            {item.period}
+          </span>
+          {item.category && (
+            <span className={`text-right text-[10px] font-bold uppercase tracking-[0.16em] ${item.highlight ? "text-red-100" : "text-zinc-400"}`}>
+              {item.category}
+            </span>
+          )}
+        </div>
+        <h2 className={`text-lg font-bold leading-snug ${item.highlight ? "text-white" : "text-zinc-900"}`}>
+          {item.title}
+        </h2>
+        {(item.org || item.supervisor) && (
+          <div className={`border-t pt-3 text-sm ${item.highlight ? "border-white/20 text-red-100" : "border-zinc-100 text-zinc-500"}`}>
+            {item.org && <div className={`font-semibold ${item.highlight ? "text-white" : "text-zinc-700"}`}>{item.org}</div>}
+            {item.supervisor && <div className="mt-1">{item.supervisor}</div>}
+          </div>
+        )}
+        {item.bullets.length > 0 && (
+          <ul className={`space-y-2 border-t pt-3 text-sm leading-6 ${item.highlight ? "border-white/20 text-red-50" : "border-zinc-100 text-zinc-600"}`}>
+            {item.bullets.map((bullet) => (
+              <li key={bullet} className="flex items-start gap-2">
+                <span className={`mt-2 h-1.5 w-1.5 flex-none rounded-full ${item.highlight ? "bg-white" : "bg-red-500"}`} />
+                <span>{bullet}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </article>
+  );
+}
+
+export default function MomentsPage() {
   return (
     <section className="space-y-10">
-      <div className="p-8">
-        <div className="max-w-3xl space-y-4">
-          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-red-700">
-            Timeline
-          </p>
-          <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
-            A Review Timeline of My Research, Academic, and Industry Experience.
-          </h1>
-          <p className="text-sm text-zinc-600 md:text-lg">
-            The entries below follow the order shown in the reference image,
-            with the newest experience first.
-          </p>
-        </div>
+      <div className="space-y-5 sm:hidden">
+        {moments.map((item) => (
+          <MomentCard key={`${item.period}-${item.title}`} item={item} />
+        ))}
       </div>
-
-      <div className="relative">
-        <div className="absolute left-4 top-2 h-full w-1 rounded-full bg-gradient-to-b from-red-600/100 via-red-600/50 red-600/10 md:left-6" />
-
-        <div className="space-y-6">
-          {timelineItems.map((item) => (
-            <article
-              key={`${item.period}-${item.title}`}
-              className="relative pl-12 md:pl-16"
-            >
-              <div className="relative mb-4 flex items-center">
-                <span className="absolute -left-8 top-1/2 h-7 w-7 -translate-y-1/2 rounded-full border-4 border-white bg-red-700 shadow-lg md:-left-13" />
-                <div className="inline-flex w-fit rounded-full bg-red-700/20 px-3 py-1 text-sm font-semibold text-red-700">
-                  {item.period}
-                </div>
-              </div>
-              <div
-                className={` ${item.category === "" ? "p-3" : "shadow-lg p-6"} rounded-lg transition-transform duration-300 hover:-translate-y-1`}
-              >
-                <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between md:gap-6">
-                  <div className="space-y-2">
-                    {item.category !== "" && (
-                      <div className="text-sm font-medium uppercase text-zinc-500">
-                        {item.category}
-                      </div>
-                    )}
-                    <h2
-                      className={`${item.category === "" ? "italic" : "font-bold text-xl"} leading-tight `}
-                    >
-                      {item.title}
-                    </h2>
-                  </div>
-
-                  <div className="text-left md:max-w-xs md:text-right">
-                    <div className="text-sm font-semibold ">
-                      {item.org}
-                    </div>
-                    <div className="mt-1 text-sm text-zinc-500">
-                      {item.supervisor}
-                    </div>
-                  </div>
-                </div>
-                {item.image && (
-                  <div className="mt-4">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="max-w-xs w-full rounded-md shadow-md object-contain"
-                    />
-                  </div>
-                )}
-
-                {item.bullets.length > 0 && (
-                  <ul className="mt-5 text-zinc-700">
-                    {item.bullets.map((bullet) => (
-                      <li
-                        key={bullet}
-                        className="flex gap-3 text-sm items-center justify-start"
-                      >
-                        <span className="h-1 w-1 flex-none rounded-full bg-black" />
-                        <span>{bullet}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            </article>
-          ))}
-        </div>
+      <div className="hidden items-start gap-5 sm:grid sm:grid-cols-2">
+        {[0, 1].map((column) => (
+          <div key={column} className="space-y-5">
+            {moments
+              .filter((_, index) => index % 2 === column)
+              .map((item) => (
+                <MomentCard key={`${item.period}-${item.title}`} item={item} />
+              ))}
+          </div>
+        ))}
       </div>
     </section>
   );
