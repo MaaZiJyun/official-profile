@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild:convert": "node ./scripts/convert_tex.js",
-    "build": "npm run prebuild:convert && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "deploy:ghpages": "echo Deploy is handled by GitHub Actions (see .github/workflows/gh-pages.yml)"

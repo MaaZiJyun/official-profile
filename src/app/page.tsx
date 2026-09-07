@@ -7,13 +7,31 @@ export default function Home() {
   return (
     <section>
       <div className="flex items-center gap-4">
-        <Image
-          src="/profile.jpg"
-          alt="Profile"
-          width={120}
-          height={120}
-          className="rounded-full"
-        />
+        <Link
+          href="/slides"
+          className="group relative shrink-0"
+          aria-label="Start slide presentation"
+        >
+          <Image
+            src="/profile.jpg"
+            alt="Profile"
+            width={120}
+            height={120}
+            className="rounded-full"
+          />
+          {/* Play button overlay — shown on hover */}
+          <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/0 group-hover:bg-black/40 transition-colors duration-300">
+            <div className="flex items-center justify-center h-12 w-12 rounded-full bg-red-600/90 opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100 transition-all duration-300 shadow-lg shadow-red-600/30">
+              <svg
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="h-5 w-5 ml-0.5 text-white"
+              >
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </div>
+          </div>
+        </Link>
         <div>
           <h1 className="text-2xl font-bold">Zi Jyun, Maa</h1>
           <h1 className="text-3xl font-bold tracking-wider">馬致遠</h1>
