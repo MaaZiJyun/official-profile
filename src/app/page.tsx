@@ -94,6 +94,27 @@ export default function Home() {
       </div>
 
       <div className="mt-8">
+        <h1 className="text-xl font-bold underline">ARTICLES</h1>
+        <article className="mt-4">
+          <h2 className="text-lg font-semibold">
+            <span className="mr-2 inline-block whitespace-nowrap rounded-full bg-green-100 px-2.5 py-1 align-middle text-xs font-semibold text-green-700">
+              Accepted
+            </span>
+            [MASS 2026] Latency-Energy Co-Optimized Task Scheduling for Earth
+            Observation in Orbital Edge Computing
+          </h2>
+          <dl className="mt-3 space-y-1 text-sm">
+            <div>
+              <dd className="inline">
+                <strong>Zhiyuan Ma</strong>∗, Xiangzhi Zhang∗, Yu Liu∗, Zhenhua
+                Liu, Yuanyuan Yang
+              </dd>
+            </div>
+          </dl>
+        </article>
+      </div>
+
+      <div className="mt-8">
         <h1 className="text-xl font-bold underline">PROJECTS</h1>
         <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
           {projects.map((p) => (

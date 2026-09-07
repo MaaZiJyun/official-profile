@@ -13,7 +13,7 @@ export default function Nav() {
             <ul className="flex gap-4">
               <li>
                 <Link className="hover:underline hover:text-red-600" href="/">
-                  Intro
+                  INTRO
                 </Link>
               </li>
               <li>
@@ -21,7 +21,7 @@ export default function Nav() {
                   className="hover:underline hover:text-red-600"
                   href="/articles"
                 >
-                  Article
+                  ARTICLE
                 </Link>
               </li>
               <li>
@@ -29,7 +29,7 @@ export default function Nav() {
                   className="hover:underline hover:text-red-600"
                   href="/projects"
                 >
-                  Project
+                  PROJECT
                 </Link>
               </li>
               <li>
@@ -37,7 +37,7 @@ export default function Nav() {
                   className="hover:underline hover:text-red-600"
                   href="/moments"
                 >
-                  Moments
+                  MOMENTS
                 </Link>
               </li>
             </ul>
