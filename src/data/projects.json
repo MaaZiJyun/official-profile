@@ -1,12 +1,37 @@
 [
   {
+    "title": "CyborgCockroach Control",
+    "href": "",
+    "supervisor": "Dr. Lin Qifeng",
+    "date": "08/2026 – 09/2026",
+    "img": "/cyborg_cockroach_control/001.png",
+    "intro": "A simulation on constellation observation performance evaluator.",
+    "sections": [
+      {
+        "image": "/cyborg_cockroach_control/cockroach_control_demo.webm",
+        "subtitle": "Cockroach Control Demo",
+        "description": "A demonstration of the cyborg cockroach control system."
+      },
+      {
+        "image": "/cyborg_cockroach_control/001.png",
+        "subtitle": "Surgery",
+        "description": "The cockroach was prepared for the surgical procedure to implant the control device."
+      }
+    ]
+  },
+  {
     "title": "S.C.O.P.E.",
     "href": "",
     "supervisor": "Prof. Yu LIU",
     "date": "03/2025 – 08/2025",
-    "img": "/scope/001.png",
+    "img": "/scope/cover.png",
     "intro": "A simulation on constellation observation performance evaluator.",
     "sections": [
+      {
+        "image": "/scope/scope_demo.webm",
+        "subtitle": "Cockroach Control Demo",
+        "description": "A demonstration of the cyborg cockroach control system."
+      },
       {
         "image": "/scope/001.png",
         "subtitle": "Introduction",
@@ -29,7 +54,7 @@
     "href": "",
     "supervisor": "Prof. Ng Keng Yap",
     "date": "10/2022 – 02/2023",
-    "img": "/smart_cradle/001.png",
+    "img": "/smart_cradle/003.png",
     "intro": "Bachelor IoT project on baby-monitoring hardware and application development.",
     "sections": [
       {

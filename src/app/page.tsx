@@ -7,31 +7,13 @@ export default function Home() {
   return (
     <section>
       <div className="flex items-center gap-4">
-        <Link
-          href="/slides"
-          className="group relative shrink-0"
-          aria-label="Start slide presentation"
-        >
-          <Image
-            src="/profile.jpg"
-            alt="Profile"
-            width={120}
-            height={120}
-            className="rounded-full"
-          />
-          {/* Play button overlay — shown on hover */}
-          <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/0 group-hover:bg-black/40 transition-colors duration-300">
-            <div className="flex items-center justify-center h-12 w-12 rounded-full bg-red-600/90 opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100 transition-all duration-300 shadow-lg shadow-red-600/30">
-              <svg
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="h-5 w-5 ml-0.5 text-white"
-              >
-                <path d="M8 5v14l11-7z" />
-              </svg>
-            </div>
-          </div>
-        </Link>
+        <Image
+          src="/profile.jpg"
+          alt="Profile"
+          width={120}
+          height={120}
+          className="shrink-0 rounded-full"
+        />
         <div>
           <h1 className="text-2xl font-bold">Zi Jyun, Maa</h1>
           <h1 className="text-3xl font-bold tracking-wider">馬致遠</h1>
@@ -46,10 +28,10 @@ export default function Home() {
         <h1 className="text-xl font-bold underline">ABOUT</h1>
         <div className="mt-2 space-y-2">
           <p>
-            I am an ENTJ/INTJ personality type. My hobbies include reading,
-            hiking, composing music, and playing violin. My native language is
-            Chinese Mandarin, and I am fluent in English with an IELTS score of
-            7. I received my Master’s degree in{" "}
+            I am an ENTJ personality type. My hobbies include reading, hiking,
+            composing music, and playing violin. My native language is Chinese
+            Mandarin, and I am fluent in English with an IELTS score of 7. I
+            received my Master’s degree in{" "}
             <span className="font-semibold">Blockchain Technology</span>, at{" "}
             <a
               href="https://www.polyu.edu.hk/"
@@ -68,21 +50,20 @@ export default function Home() {
             in September 2024.
           </p>
           <p>
-            I have worked on projects (research & business) across multiple
+            I have worked on projects (academic & business) across multiple
             domains, including{" "}
             <span className="font-semibold">Mobile & Web App Development</span>,{" "}
-            <span className="font-semibold">Resource Joint Optimization</span>,{" "}
             <span className="font-semibold">Blockchain Development</span>, and{" "}
-            <span className="font-semibold">
-              Raspberry PI & Jetson Orin NX Programming
-            </span>
-            . My research interests include{" "}
+            <span className="font-semibold">Raspberry PI</span>,{" "}
+            <span className="font-semibold">Jetson Orin NX</span> and{" "}
+            <span className="font-semibold">Arduino</span> Development. My
+            research interests include{" "}
             <span className="font-semibold">Software Engineering</span>,
             <span className="font-semibold"> Reinforcement Learning</span>,
-            <span className="font-semibold"> IoT</span>, and
-            <span className="font-semibold"> Edge Computing</span>. I am
+            <span className="font-semibold"> Edge Computing</span>, and
+            <span className="font-semibold"> Cyborg Animal</span>. I am
             particularly interested in applying these technologies to real-world
-            problems in science, education, and healthcare.
+            problems.
           </p>
           <p className="italic">
             If you want to know more about me, please feel free to contact me
