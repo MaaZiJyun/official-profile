@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 
 export default function CopyEmailButton({
   email,
@@ -10,6 +11,7 @@ export default function CopyEmailButton({
   display?: string;
 }) {
   const [copied, setCopied] = useState(false);
+  const { t } = useLanguage();
 
   const doCopy = async () => {
     try {
@@ -26,10 +28,12 @@ export default function CopyEmailButton({
     <button
       type="button"
       onClick={doCopy}
-      aria-label={`Copy email ${email}`}
+      aria-label={`${t("copyEmail")} ${email}`}
       className="mt-1 text-zinc-600 bg-transparent border-0 p-0 cursor-pointer"
     >
-      <span className={copied ? "text-green-600" : ""}>{copied ? "Email copied" : display ?? email}</span>
+      <span className={copied ? "text-green-600" : ""}>
+        {copied ? t("emailCopied") : display ?? email}
+      </span>
     </button>
   );
 }

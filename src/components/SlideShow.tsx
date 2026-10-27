@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
+import { useLanguage } from "@/components/LanguageProvider";
 
 type Section = {
   image: string;
@@ -20,6 +21,7 @@ export default function SlideShow({
   sections: Section[];
   link: string;
 }) {
+  const { t } = useLanguage();
   const [index, setIndex] = useState(0);
   const duration = 8000; // ms per slide
   const [progress, setProgress] = useState(0); // 0..1
@@ -88,7 +90,7 @@ export default function SlideShow({
           <button
             key={i}
             onClick={() => goTo(i)}
-            aria-label={`Go to slide ${i + 1}`}
+            aria-label={`${t("goToSlide")} ${i + 1}`}
             className="relative h-2 w-full rounded-full overflow-hidden hover:cursor-pointer bg-zinc-300"
           >
             {/* already-seen slides are filled */}
@@ -120,7 +122,7 @@ export default function SlideShow({
               muted
               playsInline
               preload="metadata"
-              aria-label={sections[index].subtitle ?? "Project video"}
+              aria-label={sections[index].subtitle ?? t("projectVideo")}
               onLoadedData={handleMediaReady}
               onError={handleMediaError}
               onTimeUpdate={(event) => {
@@ -157,7 +159,7 @@ export default function SlideShow({
               className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-zinc-900 text-sm text-white"
             >
               <span className="h-10 w-10 animate-spin rounded-full border-4 border-white/30 border-t-white" />
-              <span>Loading media…</span>
+              <span>{t("loadingMedia")}</span>
             </div>
           )}
 
@@ -166,7 +168,7 @@ export default function SlideShow({
               role="alert"
               className="absolute inset-0 z-10 flex items-center justify-center bg-zinc-900 px-6 text-center text-white"
             >
-              This media could not be loaded.
+              {t("mediaError")}
             </div>
           )}
 
@@ -176,7 +178,7 @@ export default function SlideShow({
               href={link}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Open project website"
+              aria-label={t("openProjectWebsite")}
               className="absolute right-5 top-4 z-20 inline-flex items-center gap-2 rounded-full bg-red-600/50 p-3 text-white hover:bg-red-600/80"
             >
               <ArrowTopRightOnSquareIcon className="h-5 w-5" />
@@ -192,14 +194,14 @@ export default function SlideShow({
       </div>
 
       <button
-        aria-label="Previous"
+        aria-label={t("previous")}
         onClick={prev}
         className="absolute left-2 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/30 p-2 text-white hover:cursor-pointer hover:bg-black/50"
       >
         ◀
       </button>
       <button
-        aria-label="Next"
+        aria-label={t("next")}
         onClick={next}
         className="absolute right-2 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/30 p-2 text-white hover:cursor-pointer hover:bg-black/50"
       >

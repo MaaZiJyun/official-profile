@@ -1,6 +1,13 @@
-import Image from "next/image";
+"use client";
 
-const moments = [
+import Image from "next/image";
+import { useLanguage } from "@/components/LanguageProvider";
+import {
+  traditionalChineseMoments,
+  type Moment,
+} from "@/data/moments-zh";
+
+const moments: Moment[] = [
   {
     period: "08/2026 — 11/2026",
     category: "Research Assistant",
@@ -204,8 +211,6 @@ const moments = [
   },
 ];
 
-type Moment = (typeof moments)[number];
-
 function MomentCard({ item }: { item: Moment }) {
   return (
     <article
@@ -258,17 +263,21 @@ function MomentCard({ item }: { item: Moment }) {
 }
 
 export default function MomentsPage() {
+  const { language } = useLanguage();
+  const displayedMoments =
+    language === "en" ? moments : traditionalChineseMoments;
+
   return (
     <section className="space-y-10">
       <div className="space-y-5 sm:hidden">
-        {moments.map((item) => (
+        {displayedMoments.map((item) => (
           <MomentCard key={`${item.period}-${item.title}`} item={item} />
         ))}
       </div>
       <div className="hidden items-start gap-5 sm:grid sm:grid-cols-2">
         {[0, 1].map((column) => (
           <div key={column} className="space-y-5">
-            {moments
+            {displayedMoments
               .filter((_, index) => index % 2 === column)
               .map((item) => (
                 <MomentCard key={`${item.period}-${item.title}`} item={item} />

@@ -29,15 +29,15 @@ body {
   font-family: var(--site-font);
 }
 
-/* Use SimSun (宋体) for Chinese text when language is set to Chinese */
+/* Use Traditional Chinese fonts when the selected language is zh-Hant. */
 :lang(zh),
 [lang^="zh"] {
-  font-family: "SimSun", "宋体", "Noto Serif SC", "Microsoft YaHei", serif;
+  font-family: "Noto Serif TC", "PMingLiU", "PingFang TC", "Microsoft JhengHei", serif;
 }
 
-/* Fallback class to force Chinese font where lang attr may be missing */
+/* Fallback class to force the Traditional Chinese font stack. */
 .zh-font {
-  font-family: "SimSun", "宋体", "Noto Serif SC", "Microsoft YaHei", serif;
+  font-family: "Noto Serif TC", "PMingLiU", "PingFang TC", "Microsoft JhengHei", serif;
 }
 
 /* Utility: justified text */

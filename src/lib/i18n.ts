@@ -1,0 +1,48 @@
+export type Language = "en" | "zh-Hant";
+
+export const ui = {
+  en: {
+    intro: "INTRO",
+    moments: "MOMENTS",
+    about: "ABOUT",
+    articles: "ARTICLES",
+    projects: "PROJECTS",
+    accepted: "Accepted",
+    supervisor: "Supervisor",
+    projectNotFound: "Project not found",
+    backHome: "Back to home",
+    loadingMedia: "Loading media…",
+    mediaError: "This media could not be loaded.",
+    openProjectWebsite: "Open project website",
+    projectVideo: "Project video",
+    previous: "Previous",
+    next: "Next",
+    goToSlide: "Go to slide",
+    emailCopied: "Email copied",
+    copyEmail: "Copy email",
+    profile: "Profile",
+  },
+  "zh-Hant": {
+    intro: "簡介",
+    moments: "歷程",
+    about: "關於我",
+    articles: "文章",
+    projects: "專案",
+    accepted: "已接受",
+    supervisor: "指導老師",
+    projectNotFound: "找不到此專案",
+    backHome: "返回首頁",
+    loadingMedia: "正在載入媒體…",
+    mediaError: "無法載入此媒體。",
+    openProjectWebsite: "開啟專案網站",
+    projectVideo: "專案影片",
+    previous: "上一張",
+    next: "下一張",
+    goToSlide: "前往投影片",
+    emailCopied: "電郵地址已複製",
+    copyEmail: "複製電郵地址",
+    profile: "個人網站",
+  },
+} as const;
+
+export type TranslationKey = keyof (typeof ui)["en"];
