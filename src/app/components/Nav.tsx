@@ -19,22 +19,6 @@ export default function Nav() {
               <li>
                 <Link
                   className="hover:underline hover:text-red-600"
-                  href="/articles"
-                >
-                  ARTICLE
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="hover:underline hover:text-red-600"
-                  href="/projects"
-                >
-                  PROJECT
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="hover:underline hover:text-red-600"
                   href="/moments"
                 >
                   MOMENTS
