@@ -108,6 +108,11 @@
     "intro": "Mobile loan application as a intern. project for EOS Systems Sdn. Bhd.",
     "sections": [
       {
+        "image": "/eos/eos_demo.webm",
+        "subtitle": "EOS Credit Demo",
+        "description": "A demonstration of the EOS Credit mobile application."
+      },
+      {
         "image": "/eos/001.png",
         "subtitle": "Introduction to EOS Credit App",
         "description": "EOS Credit is a mobile application designed to provide convenient and secure lending services to individuals seeking financial assistance. "

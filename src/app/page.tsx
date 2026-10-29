@@ -6,11 +6,16 @@ import CopyEmailButton from "../components/CopyEmailButton";
 import { localizeProject, projects } from "@/lib/projects";
 import { useLanguage } from "@/components/LanguageProvider";
 
+function getProjectEndDate(date: string) {
+  const [month, year] = date.split("–").at(-1)!.trim().split("/");
+  return Number(year) * 12 + Number(month);
+}
+
 export default function Home() {
   const { language, t } = useLanguage();
-  const localizedProjects = projects.map((project) =>
-    localizeProject(project, language),
-  );
+  const localizedProjects = [...projects]
+    .sort((a, b) => getProjectEndDate(b.date) - getProjectEndDate(a.date))
+    .map((project) => localizeProject(project, language));
 
   return (
     <section>

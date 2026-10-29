@@ -98,7 +98,7 @@ const traditionalChineseProjects: Record<string, ProjectTranslation> = {
             },
         ],
     },
-    momcare: {
+    'momcare': {
         title: 'Momcare',
         intro: '為孕婦提供健康管理與支援的行動應用程式。',
         sections: [
@@ -120,6 +120,10 @@ const traditionalChineseProjects: Record<string, ProjectTranslation> = {
         title: 'EOS Credit',
         intro: '在 EOS Systems Sdn. Bhd. 實習期間開發的行動貸款應用程式。',
         sections: [
+            {
+                subtitle: '软件产品功能示範',
+                description: '展示软件产品基本功能。',
+            },
             {
                 subtitle: 'EOS Credit 應用程式簡介',
                 description: 'EOS Credit 是一款行動應用程式，旨在為需要財務協助的人士提供方便且安全的貸款服務。',

@@ -2,7 +2,7 @@ import { getProjectBySlug, projects } from "@/lib/projects";
 import ProjectDetails from "@/components/ProjectDetails";
 
 type Props = {
-  params: Promise<{ slug: string }> | { slug: string };
+  params: Promise<{ slug: string }>;
 };
 
 export async function generateStaticParams() {
@@ -10,7 +10,7 @@ export async function generateStaticParams() {
 }
 
 export default async function ProjectPage({ params }: Props) {
-  const { slug } = (await params) as { slug: string };
+  const { slug } = await params;
   const project = getProjectBySlug(slug);
 
   return <ProjectDetails project={project} />;
